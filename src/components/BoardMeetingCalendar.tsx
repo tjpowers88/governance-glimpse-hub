@@ -14,6 +14,10 @@ const BoardMeetingCalendar: React.FC<BoardMeetingCalendarProps> = ({
   boardName,
   meetings
 }) => {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toISOString().split('T')[0];
+  };
+
   const upcomingMeetings = meetings
     .filter(m => m.status === 'scheduled' || m.status === 'in-progress')
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
@@ -54,7 +58,7 @@ const BoardMeetingCalendar: React.FC<BoardMeetingCalendarProps> = ({
               <div className="space-y-2 text-sm text-gray-600">
                 <div className="flex items-center">
                   <Calendar className="h-4 w-4 mr-2" />
-                  {new Date(meeting.date).toLocaleDateString()}
+                  {formatDate(meeting.date)}
                 </div>
                 <div className="flex items-center">
                   <Clock className="h-4 w-4 mr-2" />

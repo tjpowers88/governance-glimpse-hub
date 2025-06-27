@@ -27,6 +27,10 @@ interface UploadedTemplate {
 }
 
 const SlideGenerator: React.FC<SlideGeneratorProps> = ({ board, meeting, onClose }) => {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toISOString().split('T')[0];
+  };
+
   const [selectedTemplate, setSelectedTemplate] = useState<string>('standard');
   const [slidesGenerated, setSlidesGenerated] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -48,7 +52,7 @@ const SlideGenerator: React.FC<SlideGeneratorProps> = ({ board, meeting, onClose
     slides: [
       {
         title: 'Title Slide',
-        content: `${board.name}\nMeeting Date: ${new Date(meeting.date).toLocaleDateString()}\nChairperson: ${meeting.chairperson}`,
+        content: `${board.name}\nMeeting Date: ${formatDate(meeting.date)}\nChairperson: ${meeting.chairperson}`,
         type: 'title'
       },
       {
@@ -133,7 +137,7 @@ const SlideGenerator: React.FC<SlideGeneratorProps> = ({ board, meeting, onClose
     // Simulate file download
     const link = document.createElement('a');
     link.href = '#'; // Would be the actual file blob URL
-    link.download = `${board.name}_Meeting_${new Date(meeting.date).toISOString().split('T')[0]}.pptx`;
+    link.download = `${board.name}_Meeting_${formatDate(meeting.date)}.pptx`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -179,7 +183,7 @@ const SlideGenerator: React.FC<SlideGeneratorProps> = ({ board, meeting, onClose
           <div>
             <h4 className="font-medium mb-2">Meeting Information</h4>
             <div className="text-sm text-gray-600 space-y-1">
-              <p>Date: {new Date(meeting.date).toLocaleDateString()}</p>
+              <p>Date: {formatDate(meeting.date)}</p>
               <p>Agenda Items: {meeting.agenda.length}</p>
               <p>Total Duration: {meeting.agenda.reduce((sum, item) => sum + item.duration, 0)} minutes</p>
               <p>Output Format: Microsoft PowerPoint (.pptx)</p>

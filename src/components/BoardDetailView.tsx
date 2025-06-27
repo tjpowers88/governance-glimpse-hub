@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -26,6 +25,10 @@ interface BoardDetailViewProps {
 const BoardDetailView: React.FC<BoardDetailViewProps> = ({ board, onBack, currentUser }) => {
   const [showEmailGenerator, setShowEmailGenerator] = useState(false);
   const [showSlideGenerator, setShowSlideGenerator] = useState(false);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toISOString().split('T')[0];
+  };
 
   // Check if current user is a member of the board
   const isMember = currentUser ? 
@@ -111,7 +114,7 @@ const BoardDetailView: React.FC<BoardDetailViewProps> = ({ board, onBack, curren
             {board.nextMeeting && (
               <div className="flex items-center">
                 <Calendar className="h-4 w-4 mr-1" />
-                Next: {new Date(board.nextMeeting).toLocaleDateString()}
+                Next: {formatDate(board.nextMeeting)}
               </div>
             )}
           </div>

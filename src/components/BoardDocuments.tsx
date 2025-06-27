@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -22,6 +21,10 @@ const BoardDocuments: React.FC<BoardDocumentsProps> = ({
   isMember,
   onUploadDocument
 }) => {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toISOString().split('T')[0];
+  };
+
   // Filter documents based on membership - only members can see any documents
   const visibleDocuments = isMember ? documents : [];
 
@@ -118,7 +121,7 @@ const BoardDocuments: React.FC<BoardDocumentsProps> = ({
                 </TableCell>
                 <TableCell>
                   <span className="text-sm text-gray-600">
-                    {new Date(document.uploadedDate).toLocaleDateString()}
+                    {formatDate(document.uploadedDate)}
                   </span>
                 </TableCell>
                 <TableCell>

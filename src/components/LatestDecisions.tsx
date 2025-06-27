@@ -5,6 +5,10 @@ import { Badge } from '@/components/ui/badge';
 import { Eye, Calendar, Users } from 'lucide-react';
 
 const LatestDecisions = () => {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toISOString().split('T')[0];
+  };
+
   const decisions = [
     {
       id: 1,
@@ -79,7 +83,7 @@ const LatestDecisions = () => {
               </div>
               <div className="flex items-center">
                 <Calendar className="h-4 w-4 mr-1" />
-                {new Date(decision.date).toLocaleDateString()}
+                {formatDate(decision.date)}
               </div>
             </div>
             

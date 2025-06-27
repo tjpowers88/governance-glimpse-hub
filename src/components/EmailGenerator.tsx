@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,17 +14,21 @@ interface EmailGeneratorProps {
 const EmailGenerator: React.FC<EmailGeneratorProps> = ({ board, meeting, onClose }) => {
   const [emailGenerated, setEmailGenerated] = useState(false);
 
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toISOString().split('T')[0];
+  };
+
   const generateEmailContent = () => {
     const totalDuration = meeting.agenda.reduce((sum, item) => sum + item.duration, 0);
     
-    return `Subject: ${board.name} Meeting - ${new Date(meeting.date).toLocaleDateString()}
+    return `Subject: ${board.name} Meeting - ${formatDate(meeting.date)}
 
 Dear Board Members,
 
 You are invited to attend the upcoming ${board.name} meeting.
 
 Meeting Details:
-• Date: ${new Date(meeting.date).toLocaleDateString()}
+• Date: ${formatDate(meeting.date)}
 • Time: ${meeting.startTime} - ${meeting.endTime}
 • Location: ${meeting.location}
 • Chairperson: ${meeting.chairperson}

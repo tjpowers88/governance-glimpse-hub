@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -27,6 +26,10 @@ const BoardDecisionTracker: React.FC<BoardDecisionTrackerProps> = ({
   onEscalateDecision,
   onToggleConfidentiality
 }) => {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toISOString().split('T')[0];
+  };
+
   // Filter decisions based on membership
   const visibleDecisions = isMember 
     ? decisions 
@@ -113,7 +116,7 @@ const BoardDecisionTracker: React.FC<BoardDecisionTrackerProps> = ({
                   </div>
                 </TableCell>
                 <TableCell>
-                  {new Date(decision.createdDate).toLocaleDateString()}
+                  {formatDate(decision.createdDate)}
                 </TableCell>
                 <TableCell>
                   <div className="flex space-x-2">

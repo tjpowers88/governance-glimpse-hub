@@ -26,6 +26,10 @@ const AgendaManager: React.FC<AgendaManagerProps> = ({
   onAddAgendaItem,
   onReorderItem
 }) => {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toISOString().split('T')[0];
+  };
+
   const getTypeColor = (type: string) => {
     switch (type) {
       case 'decision': return 'bg-blue-100 text-blue-800';
@@ -65,7 +69,7 @@ const AgendaManager: React.FC<AgendaManagerProps> = ({
               <div>
                 <h4 className="font-medium text-blue-900">Next Meeting</h4>
                 <p className="text-sm text-blue-700">
-                  {new Date(nextMeeting.date).toLocaleDateString()} at {nextMeeting.startTime}
+                  {formatDate(nextMeeting.date)} at {nextMeeting.startTime}
                 </p>
                 <p className="text-sm text-blue-700">{nextMeeting.location}</p>
               </div>

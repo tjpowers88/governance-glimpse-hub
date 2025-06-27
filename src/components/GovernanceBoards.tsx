@@ -10,6 +10,10 @@ import BoardDetailView from './BoardDetailView';
 const GovernanceBoards = () => {
   const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
 
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toISOString().split('T')[0];
+  };
+
   // Mock current user - in a real app this would come from authentication
   const currentUser = {
     id: '1',
@@ -296,7 +300,7 @@ const GovernanceBoards = () => {
         {board.nextMeeting && (
           <div className="flex items-center">
             <Calendar className="h-4 w-4 mr-2" />
-            <span><strong>Next Meeting:</strong> {new Date(board.nextMeeting).toLocaleDateString()}</span>
+            <span><strong>Next Meeting:</strong> {formatDate(board.nextMeeting)}</span>
           </div>
         )}
       </div>

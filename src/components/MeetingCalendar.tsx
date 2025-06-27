@@ -5,6 +5,10 @@ import { Calendar, Clock, MapPin } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 const MeetingCalendar = () => {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toISOString().split('T')[0];
+  };
+
   const meetings = [
     {
       id: 1,
@@ -73,7 +77,7 @@ const MeetingCalendar = () => {
             <div className="space-y-1 text-sm text-gray-600">
               <div className="flex items-center">
                 <Calendar className="h-3 w-3 mr-1" />
-                {new Date(meeting.date).toLocaleDateString()}
+                {formatDate(meeting.date)}
               </div>
               <div className="flex items-center">
                 <Clock className="h-3 w-3 mr-1" />
