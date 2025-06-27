@@ -329,7 +329,7 @@ const GovernanceBoards = () => {
           onClick={() => setSelectedBoard(board)}
         >
           <Eye className="h-4 w-4 mr-1" />
-          Manage Board
+          View Board
         </Button>
         <Button variant="outline" size="sm">
           <Shield className="h-4 w-4" />

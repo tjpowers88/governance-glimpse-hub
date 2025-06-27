@@ -2,31 +2,25 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus, FileText, Calendar, Users, BookOpen, AlertCircle } from 'lucide-react';
+import { Calendar, BookOpen, AlertCircle, Eye } from 'lucide-react';
 
 const QuickActions = () => {
   const actions = [
     {
-      title: 'New Decision',
-      description: 'Record a new governance decision',
-      icon: Plus,
+      title: 'View Boards',
+      description: 'Browse governance boards and meetings',
+      icon: Eye,
       color: 'bg-blue-800 hover:bg-blue-900'
     },
     {
-      title: 'Schedule Meeting',
-      description: 'Add a board meeting to calendar',
+      title: 'Meeting Calendar',
+      description: 'View upcoming board meetings',
       icon: Calendar,
       color: 'bg-gray-600 hover:bg-gray-700'
     },
     {
-      title: 'Upload Document',
-      description: 'Add files to board repository',
-      icon: FileText,
-      color: 'bg-gray-500 hover:bg-gray-600'
-    },
-    {
       title: 'Board Guidelines',
-      description: 'View dos and don\'ts',
+      description: 'View governance guidelines and policies',
       icon: BookOpen,
       color: 'bg-blue-700 hover:bg-blue-800'
     }
@@ -61,9 +55,9 @@ const QuickActions = () => {
         <div className="flex items-start">
           <AlertCircle className="h-5 w-5 text-blue-800 mr-2 mt-0.5" />
           <div>
-            <h3 className="text-sm font-medium text-blue-900">Governance Reminder</h3>
+            <h3 className="text-sm font-medium text-blue-900">Governance Information</h3>
             <p className="text-sm text-blue-800 mt-1">
-              Remember to mark sensitive decisions as confidential to maintain security compliance.
+              Access board information and meetings based on your permissions and role.
             </p>
           </div>
         </div>
