@@ -17,11 +17,11 @@ const Navigation = ({ activeSection, setActiveSection }: NavigationProps) => {
   ];
 
   return (
-    <nav className="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-100 shadow-sm z-50">
+    <nav className="fixed left-0 top-0 h-full w-64 bg-slate-900 border-r border-slate-700 shadow-lg z-50">
       <div className="p-6">
         <div className="flex items-center mb-8">
-          <Shield className="h-8 w-8 text-blue-800 mr-3" />
-          <span className="text-xl font-bold text-gray-900">IT Governance</span>
+          <Shield className="h-8 w-8 text-blue-400 mr-3" />
+          <span className="text-xl font-bold text-white">IT Governance</span>
         </div>
         
         <div className="space-y-1">
@@ -33,8 +33,8 @@ const Navigation = ({ activeSection, setActiveSection }: NavigationProps) => {
                 onClick={() => setActiveSection(item.id)}
                 className={`w-full flex items-center px-4 py-3 rounded-lg text-left transition-all duration-200 ${
                   activeSection === item.id
-                    ? 'bg-blue-50 text-blue-800 border-l-4 border-blue-800 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    ? 'bg-blue-600 text-white border-l-4 border-blue-400 shadow-md'
+                    : 'text-gray-300 hover:text-white hover:bg-slate-800'
                 }`}
               >
                 <Icon className="h-5 w-5 mr-3" />
@@ -46,12 +46,12 @@ const Navigation = ({ activeSection, setActiveSection }: NavigationProps) => {
       </div>
       
       <div className="absolute bottom-6 left-6 right-6">
-        <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+        <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
           <div className="flex items-center">
-            <Settings className="h-5 w-5 text-gray-600 mr-2" />
-            <span className="text-gray-900 text-sm font-medium">Admin Panel</span>
+            <Settings className="h-5 w-5 text-gray-400 mr-2" />
+            <span className="text-white text-sm font-medium">Admin Panel</span>
           </div>
-          <p className="text-gray-500 text-xs mt-1">Manage system settings</p>
+          <p className="text-gray-400 text-xs mt-1">Manage system settings</p>
         </div>
       </div>
     </nav>

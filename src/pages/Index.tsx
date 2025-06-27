@@ -7,14 +7,14 @@ const Index = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
 
   return (
-    <div className="min-h-screen bg-white flex">
+    <div className="min-h-screen bg-gray-50 flex">
       <Navigation activeSection={activeSection} setActiveSection={setActiveSection} />
       <div className="flex-1 ml-64">
+        <div className="bg-slate-900 border-b border-slate-700 px-8 py-6 shadow-sm">
+          <h1 className="text-3xl font-bold text-white mb-1">IT Governance Portal</h1>
+          <p className="text-gray-300">Centralized governance decisions, meetings, and resources</p>
+        </div>
         <div className="p-8">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">IT Governance Portal</h1>
-            <p className="text-lg text-gray-600">Centralized governance decisions, meetings, and resources</p>
-          </div>
           {activeSection === 'dashboard' && <Dashboard />}
           {activeSection === 'calendar' && (
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
