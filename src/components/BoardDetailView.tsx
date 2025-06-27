@@ -9,18 +9,38 @@ import BoardDecisionTracker from './BoardDecisionTracker';
 import AgendaManager from './AgendaManager';
 import EmailGenerator from './EmailGenerator';
 import SlideGenerator from './SlideGenerator';
+import BoardQuickActions from './BoardQuickActions';
+import BoardMeetingCalendar from './BoardMeetingCalendar';
 
 interface BoardDetailViewProps {
   board: Board;
   onBack: () => void;
+  currentUser?: {
+    id: string;
+    name: string;
+    email: string;
+  };
 }
 
-const BoardDetailView: React.FC<BoardDetailViewProps> = ({ board, onBack }) => {
+const BoardDetailView: React.FC<BoardDetailViewProps> = ({ board, onBack, currentUser }) => {
   const [showEmailGenerator, setShowEmailGenerator] = useState(false);
   const [showSlideGenerator, setShowSlideGenerator] = useState(false);
 
+  // Check if current user is a member of the board
+  const isMember = currentUser ? 
+    board.members.includes(currentUser.name) || board.chair === currentUser.name :
+    false;
+
   const handleCreateDecision = () => {
     console.log('Creating new decision for board:', board.id);
+  };
+
+  const handleScheduleMeeting = () => {
+    console.log('Scheduling meeting for board:', board.id);
+  };
+
+  const handleUploadDocument = () => {
+    console.log('Uploading document for board:', board.id);
   };
 
   const handleEscalateDecision = (decisionId: string) => {
@@ -73,6 +93,9 @@ const BoardDetailView: React.FC<BoardDetailViewProps> = ({ board, onBack }) => {
             <div>
               <h1 className="text-2xl font-bold text-gray-900">{board.name}</h1>
               <p className="text-gray-600">{board.description}</p>
+              {!isMember && (
+                <p className="text-sm text-amber-600 mt-1">Viewing as non-member - limited access</p>
+              )}
             </div>
           </div>
           <div className="flex items-center space-x-4 text-sm text-gray-600">
@@ -109,35 +132,59 @@ const BoardDetailView: React.FC<BoardDetailViewProps> = ({ board, onBack }) => {
         </div>
       </Card>
 
-      <Tabs defaultValue="decisions" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="decisions">Decision Tracking</TabsTrigger>
-          <TabsTrigger value="agenda">Agenda Management</TabsTrigger>
-        </TabsList>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="lg:col-span-3">
+          <Tabs defaultValue="decisions" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="decisions">Decision Tracking</TabsTrigger>
+              <TabsTrigger value="agenda">Agenda Management</TabsTrigger>
+              <TabsTrigger value="meetings">Meeting Calendar</TabsTrigger>
+            </TabsList>
 
-        <TabsContent value="decisions">
-          <BoardDecisionTracker
+            <TabsContent value="decisions">
+              <BoardDecisionTracker
+                boardId={board.id}
+                boardName={board.name}
+                decisions={board.decisions}
+                isMember={isMember}
+                onCreateDecision={handleCreateDecision}
+                onEscalateDecision={handleEscalateDecision}
+                onToggleConfidentiality={handleToggleConfidentiality}
+              />
+            </TabsContent>
+
+            <TabsContent value="agenda">
+              <AgendaManager
+                boardId={board.id}
+                boardName={board.name}
+                nextMeeting={nextMeeting}
+                onGenerateEmail={handleGenerateEmail}
+                onGenerateSlides={handleGenerateSlides}
+                onAddAgendaItem={() => console.log('Adding agenda item')}
+                onReorderItem={(itemId, direction) => console.log('Reordering item:', itemId, direction)}
+              />
+            </TabsContent>
+
+            <TabsContent value="meetings">
+              <BoardMeetingCalendar
+                boardName={board.name}
+                meetings={board.meetings}
+              />
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        <div className="lg:col-span-1">
+          <BoardQuickActions
             boardId={board.id}
             boardName={board.name}
-            decisions={board.decisions}
+            isMember={isMember}
             onCreateDecision={handleCreateDecision}
-            onEscalateDecision={handleEscalateDecision}
-            onToggleConfidentiality={handleToggleConfidentiality}
+            onScheduleMeeting={handleScheduleMeeting}
+            onUploadDocument={handleUploadDocument}
           />
-        </TabsContent>
-
-        <TabsContent value="agenda">
-          <AgendaManager
-            boardId={board.id}
-            boardName={board.name}
-            nextMeeting={nextMeeting}
-            onGenerateEmail={handleGenerateEmail}
-            onGenerateSlides={handleGenerateSlides}
-            onAddAgendaItem={() => console.log('Adding agenda item')}
-            onReorderItem={(itemId, direction) => console.log('Reordering item:', itemId, direction)}
-          />
-        </TabsContent>
-      </Tabs>
+        </div>
+      </div>
     </div>
   );
 };

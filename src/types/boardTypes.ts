@@ -63,3 +63,10 @@ export interface SlideTemplate {
     type: 'title' | 'agenda' | 'decision' | 'discussion' | 'conclusion';
   }[];
 }
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: 'admin' | 'member' | 'viewer';
+}

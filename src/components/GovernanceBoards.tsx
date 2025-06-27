@@ -10,6 +10,13 @@ import BoardDetailView from './BoardDetailView';
 const GovernanceBoards = () => {
   const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
 
+  // Mock current user - in a real app this would come from authentication
+  const currentUser = {
+    id: '1',
+    name: 'Sarah Johnson',
+    email: 'sarah.johnson@company.com'
+  };
+
   // Sample data with integrated decision tracking and meeting management
   const sampleDecisions: Decision[] = [
     {
@@ -303,6 +310,7 @@ const GovernanceBoards = () => {
     return (
       <BoardDetailView
         board={selectedBoard}
+        currentUser={currentUser}
         onBack={() => setSelectedBoard(null)}
       />
     );
