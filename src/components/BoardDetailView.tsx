@@ -174,6 +174,7 @@ const BoardDetailView: React.FC<BoardDetailViewProps> = ({ board, onBack, curren
               <BoardMeetingCalendar
                 boardName={board.name}
                 meetings={board.meetings}
+                isMember={isMember}
               />
             </TabsContent>
 

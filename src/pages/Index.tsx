@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Dashboard from '../components/Dashboard';
 import Navigation from '../components/Navigation';
 import GovernanceBoards from '../components/GovernanceBoards';
+import MeetingCalendarView from '../components/MeetingCalendarView';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -17,12 +18,7 @@ const Index = () => {
         </div>
         <div className="p-8">
           {activeSection === 'dashboard' && <Dashboard />}
-          {activeSection === 'calendar' && (
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Meeting Calendar</h2>
-              <p className="text-gray-600">Calendar view coming soon...</p>
-            </div>
-          )}
+          {activeSection === 'calendar' && <MeetingCalendarView />}
           {activeSection === 'boards' && <GovernanceBoards />}
           {activeSection === 'templates' && (
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
