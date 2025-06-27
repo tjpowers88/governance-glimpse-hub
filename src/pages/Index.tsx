@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Dashboard from '../components/Dashboard';
 import Navigation from '../components/Navigation';
@@ -5,6 +6,7 @@ import GovernanceBoards from '../components/GovernanceBoards';
 import MeetingCalendarView from '../components/MeetingCalendarView';
 import AuditManagement from '../components/AuditManagement';
 import PolicyManagement from '../components/PolicyManagement';
+import ITGovernancePerformance from '../components/ITGovernancePerformance';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -21,6 +23,7 @@ const Index = () => {
           {activeSection === 'dashboard' && <Dashboard />}
           {activeSection === 'calendar' && <MeetingCalendarView />}
           {activeSection === 'boards' && <GovernanceBoards />}
+          {activeSection === 'governance' && <ITGovernancePerformance />}
           {activeSection === 'audit' && <AuditManagement />}
           {activeSection === 'policy' && <PolicyManagement />}
           {activeSection === 'templates' && (
