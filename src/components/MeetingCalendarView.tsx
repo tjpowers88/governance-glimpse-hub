@@ -15,7 +15,7 @@ const MeetingCalendarView: React.FC<MeetingCalendarViewProps> = ({ boards = [] }
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'strategic' | 'tactical'>('all');
 
-  // Sample data for all boards with meetings
+  // Sample data for all boards with meetings - updated to current year
   const allBoards: Board[] = boards.length > 0 ? boards : [
     {
       id: '1',
@@ -30,7 +30,7 @@ const MeetingCalendarView: React.FC<MeetingCalendarViewProps> = ({ boards = [] }
         {
           id: '1',
           boardId: '1',
-          date: '2024-01-25',
+          date: '2025-01-25',
           startTime: '09:00',
           endTime: '11:00',
           location: 'Conference Room A',
@@ -55,7 +55,7 @@ const MeetingCalendarView: React.FC<MeetingCalendarViewProps> = ({ boards = [] }
         {
           id: '2',
           boardId: '2',
-          date: '2024-01-30',
+          date: '2025-01-30',
           startTime: '14:00',
           endTime: '16:00',
           location: 'Virtual Meeting',
@@ -80,7 +80,7 @@ const MeetingCalendarView: React.FC<MeetingCalendarViewProps> = ({ boards = [] }
         {
           id: '3',
           boardId: '3',
-          date: '2024-02-05',
+          date: '2025-02-05',
           startTime: '10:00',
           endTime: '12:00',
           location: 'Architecture Room',

@@ -13,7 +13,7 @@ const MeetingCalendar = () => {
     {
       id: 1,
       title: 'IT Strategy Board',
-      date: '2024-01-25',
+      date: '2025-01-25',
       time: '10:00 AM',
       location: 'Conference Room A',
       type: 'quarterly',
@@ -22,7 +22,7 @@ const MeetingCalendar = () => {
     {
       id: 2,
       title: 'Security Governance Board',
-      date: '2024-01-30',
+      date: '2025-01-30',
       time: '2:00 PM',
       location: 'Virtual Meeting',
       type: 'monthly',
@@ -31,7 +31,7 @@ const MeetingCalendar = () => {
     {
       id: 3,
       title: 'Data Governance Board',
-      date: '2024-02-05',
+      date: '2025-02-05',
       time: '9:00 AM',
       location: 'Conference Room B',
       type: 'monthly',
@@ -40,7 +40,7 @@ const MeetingCalendar = () => {
     {
       id: 4,
       title: 'IT Investment Board',
-      date: '2024-02-12',
+      date: '2025-02-12',
       time: '11:00 AM',
       location: 'Executive Boardroom',
       type: 'quarterly',
