@@ -1,10 +1,14 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Eye, Calendar, Users } from 'lucide-react';
+import DecisionDetailModal from './DecisionDetailModal';
 
 const LatestDecisions = () => {
+  const [selectedDecision, setSelectedDecision] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toISOString().split('T')[0];
   };
@@ -57,46 +61,67 @@ const LatestDecisions = () => {
     }
   };
 
+  const handleViewDecision = (decision: any) => {
+    setSelectedDecision(decision);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedDecision(null);
+  };
+
   return (
-    <Card className="p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Latest Governance Decisions</h2>
-        <Badge variant="outline" className="text-sm">
-          {decisions.filter(d => !d.confidential).length} Public Decisions
-        </Badge>
-      </div>
-      
-      <div className="space-y-4">
-        {decisions.filter(decision => !decision.confidential).map((decision) => (
-          <div key={decision.id} className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
-            <div className="flex items-start justify-between mb-2">
-              <h3 className="text-lg font-semibold text-gray-900">{decision.title}</h3>
-              <Badge className={getStatusColor(decision.status)}>
-                {decision.status.replace('-', ' ')}
-              </Badge>
-            </div>
-            
-            <div className="flex items-center space-x-4 text-sm text-gray-600 mb-2">
-              <div className="flex items-center">
-                <Users className="h-4 w-4 mr-1" />
-                {decision.board}
+    <>
+      <Card className="p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Latest Governance Decisions</h2>
+          <Badge variant="outline" className="text-sm">
+            {decisions.filter(d => !d.confidential).length} Public Decisions
+          </Badge>
+        </div>
+        
+        <div className="space-y-4">
+          {decisions.filter(decision => !decision.confidential).map((decision) => (
+            <div key={decision.id} className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+              <div className="flex items-start justify-between mb-2">
+                <h3 className="text-lg font-semibold text-gray-900">{decision.title}</h3>
+                <Badge className={getStatusColor(decision.status)}>
+                  {decision.status.replace('-', ' ')}
+                </Badge>
               </div>
-              <div className="flex items-center">
-                <Calendar className="h-4 w-4 mr-1" />
-                {formatDate(decision.date)}
+              
+              <div className="flex items-center space-x-4 text-sm text-gray-600 mb-2">
+                <div className="flex items-center">
+                  <Users className="h-4 w-4 mr-1" />
+                  {decision.board}
+                </div>
+                <div className="flex items-center">
+                  <Calendar className="h-4 w-4 mr-1" />
+                  {formatDate(decision.date)}
+                </div>
+              </div>
+              
+              <p className="text-gray-700">{decision.summary}</p>
+              
+              <div 
+                className="mt-3 flex items-center text-sm text-blue-600 hover:text-blue-800 cursor-pointer"
+                onClick={() => handleViewDecision(decision)}
+              >
+                <Eye className="h-4 w-4 mr-1" />
+                View full decision
               </div>
             </div>
-            
-            <p className="text-gray-700">{decision.summary}</p>
-            
-            <div className="mt-3 flex items-center text-sm text-blue-600 hover:text-blue-800 cursor-pointer">
-              <Eye className="h-4 w-4 mr-1" />
-              View full decision
-            </div>
-          </div>
-        ))}
-      </div>
-    </Card>
+          ))}
+        </div>
+      </Card>
+
+      <DecisionDetailModal
+        decision={selectedDecision}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
+    </>
   );
 };
 
