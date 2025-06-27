@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Calendar, Shield, FileText, Users, Settings, Home } from 'lucide-react';
+import { Calendar, Shield, FileText, Users, Settings, Home, ClipboardCheck, BookOpen } from 'lucide-react';
 
 interface NavigationProps {
   activeSection: string;
@@ -12,6 +12,8 @@ const Navigation = ({ activeSection, setActiveSection }: NavigationProps) => {
     { id: 'dashboard', label: 'Dashboard', icon: Home },
     { id: 'calendar', label: 'Meeting Calendar', icon: Calendar },
     { id: 'boards', label: 'Governance Boards', icon: Users },
+    { id: 'audit', label: 'Audit Management', icon: ClipboardCheck },
+    { id: 'policy', label: 'Policy Management', icon: BookOpen },
     { id: 'templates', label: 'Templates & Resources', icon: FileText },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
