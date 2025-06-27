@@ -17,10 +17,10 @@ const Navigation = ({ activeSection, setActiveSection }: NavigationProps) => {
   ];
 
   return (
-    <nav className="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-200 shadow-sm z-50">
+    <nav className="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-100 shadow-sm z-50">
       <div className="p-6">
         <div className="flex items-center mb-8">
-          <Shield className="h-8 w-8 text-orange-500 mr-3" />
+          <Shield className="h-8 w-8 text-blue-800 mr-3" />
           <span className="text-xl font-bold text-gray-900">IT Governance</span>
         </div>
         
@@ -33,7 +33,7 @@ const Navigation = ({ activeSection, setActiveSection }: NavigationProps) => {
                 onClick={() => setActiveSection(item.id)}
                 className={`w-full flex items-center px-4 py-3 rounded-lg text-left transition-all duration-200 ${
                   activeSection === item.id
-                    ? 'bg-orange-50 text-orange-600 border-l-4 border-orange-500'
+                    ? 'bg-blue-50 text-blue-800 border-l-4 border-blue-800 shadow-sm'
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                 }`}
               >
@@ -46,7 +46,7 @@ const Navigation = ({ activeSection, setActiveSection }: NavigationProps) => {
       </div>
       
       <div className="absolute bottom-6 left-6 right-6">
-        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+        <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
           <div className="flex items-center">
             <Settings className="h-5 w-5 text-gray-600 mr-2" />
             <span className="text-gray-900 text-sm font-medium">Admin Panel</span>
