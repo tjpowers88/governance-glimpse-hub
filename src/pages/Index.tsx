@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Dashboard from '../components/Dashboard';
 import Navigation from '../components/Navigation';
+import GovernanceBoards from '../components/GovernanceBoards';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -22,12 +23,7 @@ const Index = () => {
               <p className="text-gray-600">Calendar view coming soon...</p>
             </div>
           )}
-          {activeSection === 'boards' && (
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Governance Boards</h2>
-              <p className="text-gray-600">Board management interface coming soon...</p>
-            </div>
-          )}
+          {activeSection === 'boards' && <GovernanceBoards />}
           {activeSection === 'templates' && (
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Templates & Resources</h2>
