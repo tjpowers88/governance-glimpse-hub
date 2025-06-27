@@ -1,0 +1,669 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Governance Portal - Test Version</title>
+    <style>
+        /* SharePoint-compatible CSS */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .governance-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: #1e293b;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-header h2 {
+            margin: 0;
+            margin-left: 10px;
+            font-size: 18px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            margin: 4px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .nav-item:hover {
+            background-color: #334155;
+        }
+        
+        .nav-item.active {
+            background-color: #2563eb;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 0;
+        }
+        
+        .header {
+            background-color: #1e293b;
+            color: white;
+            padding: 24px 32px;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .header h1 {
+            margin: 0 0 8px 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .header p {
+            margin: 0;
+            color: #94a3b8;
+        }
+        
+        .content {
+            padding: 32px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 24px;
+        }
+        
+        .card-header {
+            padding: 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .card-title {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .card-content {
+            padding: 24px;
+        }
+        
+        .grid {
+            display: grid;
+            gap: 24px;
+        }
+        
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .meeting-item {
+            border-left: 4px solid #3b82f6;
+            padding: 16px;
+            margin-bottom: 16px;
+            background: #f8fafc;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .meeting-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        
+        .meeting-details {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-blue {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .badge-green {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .badge-yellow {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            background-color: #f3f4f6;
+            border-color: #9ca3af;
+        }
+        
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .table th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .status-active {
+            background-color: #10b981;
+        }
+        
+        .status-pending {
+            background-color: #f59e0b;
+        }
+        
+        .status-inactive {
+            background-color: #ef4444;
+        }
+        
+        .sharepoint-notice {
+            background-color: #e0f2fe;
+            border: 1px solid #0284c7;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .sharepoint-notice h3 {
+            margin: 0 0 8px 0;
+            color: #0369a1;
+        }
+        
+        .sharepoint-notice p {
+            margin: 0;
+            color: #0c4a6e;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .grid-cols-3,
+            .grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="governance-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <h2>IT Governance</h2>
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-item active" onclick="showSection('dashboard')">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v6H8V5z"></path>
+                    </svg>
+                    Dashboard
+                </div>
+                
+                <div class="nav-item" onclick="showSection('boards')">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    Governance Boards
+                </div>
+                
+                <div class="nav-item" onclick="showSection('meetings')">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    Meetings
+                </div>
+                
+                <div class="nav-item" onclick="showSection('decisions')">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                    </svg>
+                    Decisions
+                </div>
+                
+                <div class="nav-item" onclick="showSection('policies')">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                    Policies
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header">
+                <h1>IT Governance Portal - Test Version</h1>
+                <p>Demonstrating governance workflows with sample data</p>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="content">
+                <div class="sharepoint-notice">
+                    <h3>Test Version</h3>
+                    <p>This is a demonstration version using sample data. In production, this would connect to SharePoint Lists and Microsoft 365 services.</p>
+                </div>
+
+                <div class="grid grid-cols-3">
+                    <div class="card stat-card">
+                        <div class="stat-number">6</div>
+                        <div class="stat-label">Active Boards</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-number">18</div>
+                        <div class="stat-label">Pending Decisions</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Upcoming Meetings</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Recent Decisions</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="meeting-item">
+                                <div class="meeting-title">Cloud Migration Strategy Approved</div>
+                                <div class="meeting-details">
+                                    IT Strategy Board • Jan 15, 2025
+                                    <span class="badge badge-green">Approved</span>
+                                </div>
+                            </div>
+                            <div class="meeting-item">
+                                <div class="meeting-title">Security Policy Update</div>
+                                <div class="meeting-details">
+                                    Security Board • Jan 12, 2025
+                                    <span class="badge badge-yellow">Under Review</span>
+                                </div>
+                            </div>
+                            <div class="meeting-item">
+                                <div class="meeting-title">Budget Allocation for Q1</div>
+                                <div class="meeting-details">
+                                    Investment Board • Jan 10, 2025
+                                    <span class="badge badge-green">Approved</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Upcoming Meetings</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="meeting-item">
+                                <div class="meeting-title">IT Strategy Board</div>
+                                <div class="meeting-details">
+                                    📅 Jan 25, 2025 • 10:00 AM - 12:00 PM<br>
+                                    📍 Conference Room A
+                                    <div style="margin-top: 8px;">
+                                        <button class="btn btn-primary" onclick="testSharePointAction('meeting')">Join Meeting</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="meeting-item">
+                                <div class="meeting-title">Security Governance Review</div>
+                                <div class="meeting-details">
+                                    📅 Jan 30, 2025 • 2:00 PM - 4:00 PM<br>
+                                    📍 Microsoft Teams
+                                    <div style="margin-top: 8px;">
+                                        <button class="btn btn-primary" onclick="testSharePointAction('teams')">Join Teams</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Boards Section -->
+            <div id="boards-section" class="content hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Governance Boards</h3>
+                        <button class="btn btn-primary" onclick="testSharePointAction('addBoard')">Add New Board</button>
+                    </div>
+                    <div class="card-content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Board Name</th>
+                                    <th>Type</th>
+                                    <th>Chair</th>
+                                    <th>Members</th>
+                                    <th>Next Meeting</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="status-indicator status-active"></span></td>
+                                    <td>IT Strategy Board</td>
+                                    <td><span class="badge badge-blue">Strategic</span></td>
+                                    <td>Sarah Johnson</td>
+                                    <td>8</td>
+                                    <td>Jan 25, 2025</td>
+                                    <td><button class="btn" onclick="testSharePointAction('viewBoard')">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="status-indicator status-active"></span></td>
+                                    <td>Security Board</td>
+                                    <td><span class="badge badge-green">Tactical</span></td>
+                                    <td>Mike Chen</td>
+                                    <td>12</td>
+                                    <td>Jan 30, 2025</td>
+                                    <td><button class="btn" onclick="testSharePointAction('viewBoard')">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="status-indicator status-pending"></span></td>
+                                    <td>Risk Management Board</td>
+                                    <td><span class="badge badge-yellow">Operational</span></td>
+                                    <td>Lisa Rodriguez</td>
+                                    <td>6</td>
+                                    <td>Feb 5, 2025</td>
+                                    <td><button class="btn" onclick="testSharePointAction('viewBoard')">View</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meetings Section -->
+            <div id="meetings-section" class="content hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Board Meetings</h3>
+                        <button class="btn btn-primary" onclick="testSharePointAction('scheduleMeeting')">Schedule Meeting</button>
+                    </div>
+                    <div class="card-content">
+                        <div class="meeting-item">
+                            <div class="meeting-title">IT Strategy Board - Q1 Planning</div>
+                            <div class="meeting-details">
+                                📅 Jan 25, 2025 • 10:00 AM - 12:00 PM<br>
+                                📍 Conference Room A<br>
+                                👥 8 attendees • Chair: Sarah Johnson
+                                <div style="margin-top: 8px;">
+                                    <button class="btn" onclick="testSharePointAction('viewAgenda')">View Agenda</button>
+                                    <button class="btn" onclick="testSharePointAction('joinMeeting')">Join Meeting</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meeting-item">
+                            <div class="meeting-title">Security Board - Policy Review</div>
+                            <div class="meeting-details">
+                                📅 Jan 30, 2025 • 2:00 PM - 4:00 PM<br>
+                                📍 Microsoft Teams<br>
+                                👥 12 attendees • Chair: Mike Chen
+                                <div style="margin-top: 8px;">
+                                    <button class="btn" onclick="testSharePointAction('viewAgenda')">View Agenda</button>
+                                    <button class="btn" onclick="testSharePointAction('joinTeams')">Join Teams</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decisions Section -->
+            <div id="decisions-section" class="content hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Board Decisions</h3>
+                        <button class="btn btn-primary" onclick="testSharePointAction('addDecision')">Add Decision</button>
+                    </div>
+                    <div class="card-content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Decision</th>
+                                    <th>Board</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Cloud Migration Strategy</td>
+                                    <td>IT Strategy Board</td>
+                                    <td>Jan 15, 2025</td>
+                                    <td><span class="badge badge-green">Approved</span></td>
+                                    <td><span class="badge badge-blue">High</span></td>
+                                    <td><button class="btn" onclick="testSharePointAction('viewDecision')">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Security Policy Update</td>
+                                    <td>Security Board</td>
+                                    <td>Jan 12, 2025</td>
+                                    <td><span class="badge badge-yellow">Under Review</span></td>
+                                    <td><span class="badge badge-green">Medium</span></td>
+                                    <td><button class="btn" onclick="testSharePointAction('viewDecision')">View</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Policies Section -->
+            <div id="policies-section" class="content hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Policy Management</h3>
+                        <button class="btn btn-primary" onclick="testSharePointAction('addPolicy')">Add Policy</button>
+                    </div>
+                    <div class="card-content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Policy Name</th>
+                                    <th>Version</th>
+                                    <th>Status</th>
+                                    <th>Category</th>
+                                    <th>Owner</th>
+                                    <th>Next Review</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>IT Security Policy</td>
+                                    <td>v2.1</td>
+                                    <td><span class="badge badge-green">Active</span></td>
+                                    <td>Security</td>
+                                    <td>Mike Chen</td>
+                                    <td>Mar 15, 2025</td>
+                                    <td><button class="btn" onclick="testSharePointAction('viewPolicy')">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Data Governance Policy</td>
+                                    <td>v1.3</td>
+                                    <td><span class="badge badge-yellow">Under Review</span></td>
+                                    <td>Data</td>
+                                    <td>Lisa Rodriguez</td>
+                                    <td>Feb 28, 2025</td>
+                                    <td><button class="btn" onclick="testSharePointAction('viewPolicy')">View</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Test version JavaScript - simplified SharePoint integration
+        
+        // Navigation functionality
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('[id$="-section"]');
+            sections.forEach(section => section.classList.add('hidden'));
+            
+            // Remove active class from all nav items
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.remove('hidden');
+            
+            // Add active class to clicked nav item
+            event.target.closest('.nav-item').classList.add('active');
+        }
+
+        // Test SharePoint actions
+        function testSharePointAction(action) {
+            const messages = {
+                'meeting': 'In production: Would open Teams meeting or Outlook calendar event',
+                'teams': 'In production: Would launch Microsoft Teams meeting',
+                'addBoard': 'In production: Would create new item in Governance Boards SharePoint list',
+                'viewBoard': 'In production: Would display board details from SharePoint list with Teams channel integration',
+                'scheduleMeeting': 'In production: Would create new meeting in SharePoint list and Outlook calendar',
+                'viewAgenda': 'In production: Would open meeting agenda from SharePoint document library',
+                'joinMeeting': 'In production: Would launch meeting via Teams or Outlook',
+                'joinTeams': 'In production: Would join Teams meeting directly',
+                'addDecision': 'In production: Would create new decision in Board Decisions SharePoint list',
+                'viewDecision': 'In production: Would display decision details with Planner task integration',
+                'addPolicy': 'In production: Would create new policy in Policies SharePoint list',
+                'viewPolicy': 'In production: Would open policy document from SharePoint document library'
+            };
+            
+            alert(messages[action] || 'Test action completed');
+        }
+
+        // Simulate loading data from SharePoint
+        function loadTestData() {
+            console.log('Test version loaded - using sample data');
+            console.log('In production, this would:');
+            console.log('1. Connect to SharePoint REST API');
+            console.log('2. Load data from SharePoint Lists');
+            console.log('3. Integrate with Microsoft 365 services');
+            console.log('4. Display real-time governance data');
+        }
+
+        // Initialize the test version
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTestData();
+        });
+    </script>
+</body>
+</html>
