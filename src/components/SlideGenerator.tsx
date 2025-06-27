@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Download, Eye } from 'lucide-react';
+import { FileText, Download, Eye, Palette, Building } from 'lucide-react';
 import { Meeting, Board, SlideTemplate } from '../types/boardTypes';
 
 interface SlideGeneratorProps {
@@ -12,10 +11,29 @@ interface SlideGeneratorProps {
   onClose: () => void;
 }
 
+interface BrandingTemplate {
+  companyName: string;
+  primaryColor: string;
+  secondaryColor: string;
+  logoUrl: string;
+  fontFamily: string;
+  footerText: string;
+}
+
 const SlideGenerator: React.FC<SlideGeneratorProps> = ({ board, meeting, onClose }) => {
   const [selectedTemplate, setSelectedTemplate] = useState<string>('standard');
   const [slidesGenerated, setSlidesGenerated] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showBrandingConfig, setShowBrandingConfig] = useState(false);
+  
+  const [brandingTemplate, setBrandingTemplate] = useState<BrandingTemplate>({
+    companyName: 'Your Company',
+    primaryColor: '#1e40af',
+    secondaryColor: '#64748b',
+    logoUrl: '',
+    fontFamily: 'Arial',
+    footerText: 'Confidential - Board Meeting Materials'
+  });
 
   const standardTemplate: SlideTemplate = {
     id: 'standard',
@@ -49,6 +67,13 @@ const SlideGenerator: React.FC<SlideGeneratorProps> = ({ board, meeting, onClose
     ]
   };
 
+  const handleBrandingChange = (field: keyof BrandingTemplate, value: string) => {
+    setBrandingTemplate(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
   const generatePowerPointSlides = async () => {
     setIsGenerating(true);
     try {
@@ -56,6 +81,7 @@ const SlideGenerator: React.FC<SlideGeneratorProps> = ({ board, meeting, onClose
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       console.log('Generating PowerPoint presentation with template:', selectedTemplate);
+      console.log('Branding configuration:', brandingTemplate);
       console.log('Slides data:', standardTemplate.slides);
       
       // In a real implementation, this would:
@@ -73,7 +99,7 @@ const SlideGenerator: React.FC<SlideGeneratorProps> = ({ board, meeting, onClose
 
   const downloadPowerPoint = () => {
     // In a real implementation, this would download the actual .pptx file
-    console.log('Downloading PowerPoint presentation');
+    console.log('Downloading PowerPoint presentation with branding:', brandingTemplate);
     
     // Simulate file download
     const link = document.createElement('a');
@@ -133,6 +159,121 @@ const SlideGenerator: React.FC<SlideGeneratorProps> = ({ board, meeting, onClose
         </div>
       </div>
 
+      {/* Company Branding Configuration Section */}
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-3">
+          <h4 className="font-medium flex items-center">
+            <Building className="h-4 w-4 mr-2" />
+            Company Branding & Template Settings
+          </h4>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowBrandingConfig(!showBrandingConfig)}
+          >
+            <Palette className="h-3 w-3 mr-1" />
+            {showBrandingConfig ? 'Hide' : 'Configure'} Branding
+          </Button>
+        </div>
+
+        {showBrandingConfig && (
+          <div className="border rounded-lg p-4 bg-gray-50 space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Company Name</label>
+                <input
+                  type="text"
+                  value={brandingTemplate.companyName}
+                  onChange={(e) => handleBrandingChange('companyName', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                  placeholder="Your Company Name"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Font Family</label>
+                <select
+                  value={brandingTemplate.fontFamily}
+                  onChange={(e) => handleBrandingChange('fontFamily', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                >
+                  <option value="Arial">Arial</option>
+                  <option value="Calibri">Calibri</option>
+                  <option value="Times New Roman">Times New Roman</option>
+                  <option value="Helvetica">Helvetica</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Primary Color</label>
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="color"
+                    value={brandingTemplate.primaryColor}
+                    onChange={(e) => handleBrandingChange('primaryColor', e.target.value)}
+                    className="w-12 h-8 border border-gray-300 rounded"
+                  />
+                  <input
+                    type="text"
+                    value={brandingTemplate.primaryColor}
+                    onChange={(e) => handleBrandingChange('primaryColor', e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                    placeholder="#1e40af"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Secondary Color</label>
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="color"
+                    value={brandingTemplate.secondaryColor}
+                    onChange={(e) => handleBrandingChange('secondaryColor', e.target.value)}
+                    className="w-12 h-8 border border-gray-300 rounded"
+                  />
+                  <input
+                    type="text"
+                    value={brandingTemplate.secondaryColor}
+                    onChange={(e) => handleBrandingChange('secondaryColor', e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                    placeholder="#64748b"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Company Logo URL</label>
+                <input
+                  type="url"
+                  value={brandingTemplate.logoUrl}
+                  onChange={(e) => handleBrandingChange('logoUrl', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                  placeholder="https://example.com/logo.png"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Footer Text</label>
+                <input
+                  type="text"
+                  value={brandingTemplate.footerText}
+                  onChange={(e) => handleBrandingChange('footerText', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                  placeholder="Confidential - Board Meeting Materials"
+                />
+              </div>
+            </div>
+
+            <div className="pt-2 border-t">
+              <p className="text-xs text-gray-600">
+                These branding settings will be applied to all generated PowerPoint slides including headers, footers, and color schemes.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
       <div className="mb-6">
         <h4 className="font-medium mb-3">PowerPoint Slide Preview</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -181,7 +322,7 @@ const SlideGenerator: React.FC<SlideGeneratorProps> = ({ board, meeting, onClose
       {slidesGenerated && (
         <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
           <p className="text-sm text-green-700">
-            PowerPoint presentation generated successfully! You can now download the .pptx file with {standardTemplate.slides.length} slides.
+            PowerPoint presentation generated successfully with your company branding! You can now download the .pptx file with {standardTemplate.slides.length} slides.
           </p>
         </div>
       )}
@@ -189,7 +330,7 @@ const SlideGenerator: React.FC<SlideGeneratorProps> = ({ board, meeting, onClose
       {isGenerating && (
         <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <p className="text-sm text-blue-700">
-            Creating PowerPoint presentation with your meeting agenda and board template...
+            Creating PowerPoint presentation with your meeting agenda, board template, and company branding...
           </p>
         </div>
       )}
