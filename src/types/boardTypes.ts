@@ -41,6 +41,19 @@ export interface Meeting {
   secretary: string;
 }
 
+export interface Document {
+  id: string;
+  title: string;
+  fileName: string;
+  uploadedBy: string;
+  uploadedDate: string;
+  boardId: string;
+  isConfidential: boolean;
+  fileType: string;
+  fileSize: number;
+  description?: string;
+}
+
 export interface Board {
   id: string;
   name: string;
@@ -51,6 +64,7 @@ export interface Board {
   nextMeeting?: string;
   decisions: Decision[];
   meetings: Meeting[];
+  documents: Document[];
   escalationTargets?: string[]; // Board IDs that can receive escalations
 }
 

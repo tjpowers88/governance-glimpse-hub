@@ -87,7 +87,21 @@ const GovernanceBoards = () => {
       members: ['Sarah Johnson', 'Michael Chen', 'Emma Rodriguez'],
       nextMeeting: '2024-01-25',
       decisions: sampleDecisions.filter(d => d.boardId === '1'),
-      meetings: [sampleMeeting]
+      meetings: [sampleMeeting],
+      documents: [
+        {
+          id: '1',
+          title: 'Cloud Migration Strategy Document',
+          fileName: 'cloud-migration-strategy-2024.pdf',
+          uploadedBy: 'Sarah Johnson',
+          uploadedDate: '2024-01-10',
+          boardId: '1',
+          isConfidential: true,
+          fileType: 'pdf',
+          fileSize: 2048000,
+          description: 'Comprehensive strategy for cloud migration initiative'
+        }
+      ]
     },
     {
       id: '2',
@@ -98,7 +112,8 @@ const GovernanceBoards = () => {
       members: ['Michael Chen', 'Tech Lead 1', 'Tech Lead 2'],
       nextMeeting: '2024-01-30',
       decisions: [],
-      meetings: []
+      meetings: [],
+      documents: []
     },
     {
       id: '3',
@@ -109,7 +124,8 @@ const GovernanceBoards = () => {
       members: ['Emma Rodriguez', 'Legal Counsel', 'Procurement Lead'],
       nextMeeting: '2024-02-05',
       decisions: [],
-      meetings: []
+      meetings: [],
+      documents: []
     },
     {
       id: '4',
@@ -120,7 +136,8 @@ const GovernanceBoards = () => {
       members: ['David Park', 'CFO', 'Finance Director'],
       nextMeeting: '2024-02-12',
       decisions: [],
-      meetings: []
+      meetings: [],
+      documents: []
     },
     {
       id: '5',
@@ -131,7 +148,8 @@ const GovernanceBoards = () => {
       members: ['Lisa Thompson', 'Business Lead 1', 'Business Lead 2'],
       nextMeeting: '2024-02-15',
       decisions: [],
-      meetings: []
+      meetings: [],
+      documents: []
     },
     {
       id: '6',
@@ -142,7 +160,8 @@ const GovernanceBoards = () => {
       members: ['James Wilson', 'PMO Director', 'Portfolio Manager'],
       nextMeeting: '2024-02-20',
       decisions: [],
-      meetings: []
+      meetings: [],
+      documents: []
     },
     {
       id: '7',
@@ -153,7 +172,8 @@ const GovernanceBoards = () => {
       members: ['Maria Garcia', 'Vendor Relations', 'Executive Sponsor'],
       nextMeeting: '2024-02-25',
       decisions: [],
-      meetings: []
+      meetings: [],
+      documents: []
     }
   ];
 
@@ -167,7 +187,8 @@ const GovernanceBoards = () => {
       members: ['Robert Brown', 'Auditor 1', 'Compliance Officer'],
       nextMeeting: '2024-01-28',
       decisions: [],
-      meetings: []
+      meetings: [],
+      documents: []
     },
     {
       id: '9',
@@ -178,7 +199,8 @@ const GovernanceBoards = () => {
       members: ['Jennifer Lee', 'Contract Manager', 'Legal Review'],
       nextMeeting: '2024-02-02',
       decisions: [],
-      meetings: []
+      meetings: [],
+      documents: []
     },
     {
       id: '10',
@@ -189,7 +211,8 @@ const GovernanceBoards = () => {
       members: ['Alex Kumar', 'HR Business Partner', 'Training Manager'],
       nextMeeting: '2024-02-08',
       decisions: [],
-      meetings: []
+      meetings: [],
+      documents: []
     },
     {
       id: '11',
@@ -200,7 +223,8 @@ const GovernanceBoards = () => {
       members: ['Catherine Miller', 'Security Analyst', 'CISO'],
       nextMeeting: '2024-02-10',
       decisions: [],
-      meetings: []
+      meetings: [],
+      documents: []
     },
     {
       id: '12',
@@ -211,7 +235,8 @@ const GovernanceBoards = () => {
       members: ['Thomas Anderson', 'Strategy Lead', 'Operations Manager'],
       nextMeeting: '2024-02-14',
       decisions: [],
-      meetings: []
+      meetings: [],
+      documents: []
     },
     {
       id: '13',
@@ -222,7 +247,8 @@ const GovernanceBoards = () => {
       members: ['Rachel Green', 'Practice Owner 1', 'Standards Lead'],
       nextMeeting: '2024-02-18',
       decisions: [],
-      meetings: []
+      meetings: [],
+      documents: []
     },
     {
       id: '14',
@@ -233,7 +259,8 @@ const GovernanceBoards = () => {
       members: ['Kevin Davis', 'Project Manager 1', 'Resource Manager'],
       nextMeeting: '2024-02-22',
       decisions: [],
-      meetings: []
+      meetings: [],
+      documents: []
     },
     {
       id: '15',
@@ -244,7 +271,8 @@ const GovernanceBoards = () => {
       members: ['Nicole White', 'Budget Analyst', 'Finance Lead'],
       nextMeeting: '2024-02-26',
       decisions: [],
-      meetings: []
+      meetings: [],
+      documents: []
     }
   ];
 

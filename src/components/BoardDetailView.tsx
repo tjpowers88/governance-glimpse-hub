@@ -11,6 +11,7 @@ import EmailGenerator from './EmailGenerator';
 import SlideGenerator from './SlideGenerator';
 import BoardQuickActions from './BoardQuickActions';
 import BoardMeetingCalendar from './BoardMeetingCalendar';
+import BoardDocuments from './BoardDocuments';
 
 interface BoardDetailViewProps {
   board: Board;
@@ -135,10 +136,11 @@ const BoardDetailView: React.FC<BoardDetailViewProps> = ({ board, onBack, curren
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <div className="lg:col-span-3">
           <Tabs defaultValue="decisions" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="decisions">Decision Tracking</TabsTrigger>
-              <TabsTrigger value="agenda">Agenda Management</TabsTrigger>
-              <TabsTrigger value="meetings">Meeting Calendar</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="decisions">Decisions</TabsTrigger>
+              <TabsTrigger value="agenda">Agenda</TabsTrigger>
+              <TabsTrigger value="meetings">Meetings</TabsTrigger>
+              <TabsTrigger value="documents">Documents</TabsTrigger>
             </TabsList>
 
             <TabsContent value="decisions">
@@ -169,6 +171,16 @@ const BoardDetailView: React.FC<BoardDetailViewProps> = ({ board, onBack, curren
               <BoardMeetingCalendar
                 boardName={board.name}
                 meetings={board.meetings}
+              />
+            </TabsContent>
+
+            <TabsContent value="documents">
+              <BoardDocuments
+                boardId={board.id}
+                boardName={board.name}
+                documents={board.documents || []}
+                isMember={isMember}
+                onUploadDocument={handleUploadDocument}
               />
             </TabsContent>
           </Tabs>
