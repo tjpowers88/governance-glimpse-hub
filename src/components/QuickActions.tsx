@@ -10,30 +10,30 @@ const QuickActions = () => {
       title: 'New Decision',
       description: 'Record a new governance decision',
       icon: Plus,
-      color: 'bg-blue-500 hover:bg-blue-600'
+      color: 'bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700'
     },
     {
       title: 'Schedule Meeting',
       description: 'Add a board meeting to calendar',
       icon: Calendar,
-      color: 'bg-green-500 hover:bg-green-600'
+      color: 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700'
     },
     {
       title: 'Upload Document',
       description: 'Add files to board repository',
       icon: FileText,
-      color: 'bg-purple-500 hover:bg-purple-600'
+      color: 'bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700'
     },
     {
       title: 'Board Guidelines',
       description: 'View dos and don\'ts',
       icon: BookOpen,
-      color: 'bg-orange-500 hover:bg-orange-600'
+      color: 'bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700'
     }
   ];
 
   return (
-    <Card className="p-6">
+    <Card className="p-6 border-0 shadow-lg bg-white/80 backdrop-blur-sm">
       <h2 className="text-xl font-bold text-gray-900 mb-6">Quick Actions</h2>
       
       <div className="space-y-3">
@@ -43,9 +43,9 @@ const QuickActions = () => {
             <Button
               key={index}
               variant="outline"
-              className="w-full justify-start h-auto p-4 hover:bg-gray-50"
+              className="w-full justify-start h-auto p-4 hover:bg-gray-50 border-gray-200 hover:border-indigo-300 hover:shadow-md transition-all duration-200"
             >
-              <div className={`p-2 rounded-md mr-3 text-white ${action.color}`}>
+              <div className={`p-2 rounded-lg mr-3 text-white ${action.color} shadow-sm`}>
                 <Icon className="h-4 w-4" />
               </div>
               <div className="text-left">
@@ -57,7 +57,7 @@ const QuickActions = () => {
         })}
       </div>
       
-      <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+      <div className="mt-6 p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg">
         <div className="flex items-start">
           <AlertCircle className="h-5 w-5 text-amber-600 mr-2 mt-0.5" />
           <div>
