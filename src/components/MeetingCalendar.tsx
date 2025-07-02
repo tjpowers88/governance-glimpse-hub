@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Calendar, Clock, MapPin, Shield } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import MeetingDetailModal from './MeetingDetailModal';
 
 const MeetingCalendar = () => {
@@ -220,46 +221,58 @@ const MeetingCalendar = () => {
           <Calendar className="h-5 w-5 text-gray-500" />
         </div>
         
-        <div className="space-y-4">
-          {meetings.map((meeting) => (
-            <div 
-              key={meeting.id} 
-              className="border-l-4 border-blue-500 pl-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors rounded-r-lg"
-              onClick={() => handleMeetingClick(meeting)}
-            >
-              <div className="flex items-start justify-between mb-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-gray-900">{meeting.title}</h3>
-                  {meeting.isConfidential && (
-                    <Shield className="h-4 w-4 text-orange-500" />
-                  )}
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          orientation="vertical"
+          className="w-full max-h-96"
+        >
+          <CarouselContent className="-mt-2 h-96">
+            {meetings.map((meeting) => (
+              <CarouselItem key={meeting.id} className="pt-2 basis-1/4">
+                <div 
+                  className="border-l-4 border-blue-500 pl-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors rounded-r-lg"
+                  onClick={() => handleMeetingClick(meeting)}
+                >
+                  <div className="flex items-start justify-between mb-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold text-gray-900 text-sm line-clamp-1">{meeting.title}</h3>
+                      {meeting.isConfidential && (
+                        <Shield className="h-4 w-4 text-orange-500 flex-shrink-0" />
+                      )}
+                    </div>
+                    <Badge className={getTypeColor(meeting.type)}>
+                      {meeting.type}
+                    </Badge>
+                  </div>
+                  
+                  <div className="space-y-1 text-xs text-gray-600">
+                    <div className="flex items-center">
+                      <Calendar className="h-3 w-3 mr-1" />
+                      {formatDate(meeting.date)}
+                    </div>
+                    <div className="flex items-center">
+                      <Clock className="h-3 w-3 mr-1" />
+                      {meeting.startTime} - {meeting.endTime}
+                    </div>
+                    <div className="flex items-center">
+                      <MapPin className="h-3 w-3 mr-1" />
+                      <span className="truncate">{meeting.location}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-2 text-xs text-gray-500">
+                    {meeting.attendees.length} attendees • Click for details
+                  </div>
                 </div>
-                <Badge className={getTypeColor(meeting.type)}>
-                  {meeting.type}
-                </Badge>
-              </div>
-              
-              <div className="space-y-1 text-sm text-gray-600">
-                <div className="flex items-center">
-                  <Calendar className="h-3 w-3 mr-1" />
-                  {formatDate(meeting.date)}
-                </div>
-                <div className="flex items-center">
-                  <Clock className="h-3 w-3 mr-1" />
-                  {meeting.startTime} - {meeting.endTime}
-                </div>
-                <div className="flex items-center">
-                  <MapPin className="h-3 w-3 mr-1" />
-                  {meeting.location}
-                </div>
-              </div>
-              
-              <div className="mt-2 text-xs text-gray-500">
-                {meeting.attendees.length} attendees • Click for details
-              </div>
-            </div>
-          ))}
-        </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </Card>
 
       <MeetingDetailModal
