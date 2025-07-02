@@ -16,39 +16,66 @@ const LatestDecisions = () => {
   const decisions = [
     {
       id: 1,
-      title: 'Cloud Migration Strategy Approval',
+      title: 'AI Ethics Framework Implementation',
       board: 'IT Strategy Board',
-      date: '2024-01-15',
+      date: '2025-06-28',
       status: 'approved',
       confidential: false,
-      summary: 'Approved migration to Azure cloud infrastructure with timeline of 18 months.'
+      summary: 'Approved comprehensive AI ethics framework for all machine learning initiatives with mandatory review process.'
     },
     {
       id: 2,
-      title: 'Security Framework Update',
+      title: 'Zero Trust Security Architecture',
       board: 'Security Governance Board',
-      date: '2024-01-12',
-      status: 'under-review',
+      date: '2025-06-20',
+      status: 'approved',
       confidential: false,
-      summary: 'Updated cybersecurity framework to align with NIST standards.'
+      summary: 'Approved implementation of zero trust security model across all enterprise systems by Q4 2025.'
     },
     {
       id: 3,
-      title: 'Budget Allocation Q2',
+      title: 'Cloud Cost Optimization Initiative',
       board: 'IT Investment Board',
-      date: '2024-01-10',
-      status: 'approved',
+      date: '2025-06-15',
+      status: 'under-review',
       confidential: true,
       summary: 'Confidential decision - access restricted.'
     },
     {
       id: 4,
-      title: 'Data Governance Policy',
+      title: 'Data Retention Policy Update',
       board: 'Data Governance Board',
-      date: '2024-01-08',
+      date: '2025-06-08',
       status: 'approved',
       confidential: false,
-      summary: 'New data classification and retention policies implemented.'
+      summary: 'Updated data retention policies to comply with new regulatory requirements and reduce storage costs by 30%.'
+    },
+    {
+      id: 5,
+      title: 'Remote Work Technology Standards',
+      board: 'IT Strategy Board',
+      date: '2025-05-25',
+      status: 'approved',
+      confidential: false,
+      summary: 'Established standardized technology stack for remote workers including approved devices and security tools.'
+    },
+    {
+      id: 6,
+      title: 'Incident Response Plan Enhancement',
+      board: 'Security Governance Board',
+      date: '2025-05-18',
+      status: 'approved',
+      confidential: false,
+      summary: 'Enhanced incident response procedures with automated threat detection and 24/7 monitoring capabilities.'
+    },
+    {
+      id: 7,
+      title: 'Vendor Risk Assessment Framework',
+      board: 'IT Investment Board',
+      date: '2025-05-10',
+      status: 'under-review',
+      confidential: false,
+      summary: 'New framework for assessing third-party vendor security and compliance risks before contract approval.'
     }
   ];
 
