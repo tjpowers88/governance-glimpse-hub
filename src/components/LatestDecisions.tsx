@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -19,64 +18,109 @@ const LatestDecisions = () => {
       id: 1,
       title: 'AI Ethics Framework Implementation',
       board: 'IT Strategy Board',
-      date: '2025-06-28',
+      date: '2025-07-01',
       status: 'approved',
       confidential: false,
-      summary: 'Approved comprehensive AI ethics framework for all machine learning initiatives with mandatory review process.'
+      summary: 'Approved comprehensive AI ethics framework for all machine learning initiatives with mandatory review process and quarterly audits.'
     },
     {
       id: 2,
-      title: 'Zero Trust Security Architecture',
+      title: 'Zero Trust Security Architecture Rollout',
       board: 'Security Governance Board',
-      date: '2025-06-20',
+      date: '2025-06-28',
       status: 'approved',
       confidential: false,
-      summary: 'Approved implementation of zero trust security model across all enterprise systems by Q4 2025.'
+      summary: 'Approved phased implementation of zero trust security model across all enterprise systems, starting with critical infrastructure by Q4 2025.'
     },
     {
       id: 3,
-      title: 'Cloud Cost Optimization Initiative',
+      title: 'Cloud Migration Strategy Phase 3',
       board: 'IT Investment Board',
-      date: '2025-06-15',
+      date: '2025-06-25',
       status: 'under-review',
       confidential: true,
       summary: 'Confidential decision - access restricted.'
     },
     {
       id: 4,
-      title: 'Data Retention Policy Update',
+      title: 'Enterprise Data Governance Policy 2025',
       board: 'Data Governance Board',
-      date: '2025-06-08',
+      date: '2025-06-20',
       status: 'approved',
       confidential: false,
-      summary: 'Updated data retention policies to comply with new regulatory requirements and reduce storage costs by 30%.'
+      summary: 'Updated comprehensive data governance policies including new AI/ML data handling procedures, GDPR compliance updates, and cross-border data transfer protocols.'
     },
     {
       id: 5,
-      title: 'Remote Work Technology Standards',
+      title: 'Remote Work Security Standards v2.0',
       board: 'IT Strategy Board',
-      date: '2025-05-25',
+      date: '2025-06-15',
       status: 'approved',
       confidential: false,
-      summary: 'Established standardized technology stack for remote workers including approved devices and security tools.'
+      summary: 'Enhanced remote work technology standards including mandatory VPN usage, endpoint detection requirements, and updated BYOD policies for hybrid workforce.'
     },
     {
       id: 6,
-      title: 'Incident Response Plan Enhancement',
+      title: 'Incident Response Automation Initiative',
       board: 'Security Governance Board',
-      date: '2025-05-18',
+      date: '2025-06-10',
       status: 'approved',
       confidential: false,
-      summary: 'Enhanced incident response procedures with automated threat detection and 24/7 monitoring capabilities.'
+      summary: 'Approved implementation of automated incident response procedures with AI-powered threat detection and 24/7 SOAR integration capabilities.'
     },
     {
       id: 7,
-      title: 'Vendor Risk Assessment Framework',
+      title: 'Third-Party Risk Management Framework',
       board: 'IT Investment Board',
+      date: '2025-06-05',
+      status: 'under-review',
+      confidential: false,
+      summary: 'Comprehensive framework for assessing and managing third-party vendor security, compliance, and operational risks throughout the contract lifecycle.'
+    },
+    {
+      id: 8,
+      title: 'Digital Transformation Roadmap 2025-2027',
+      board: 'IT Strategy Board',
+      date: '2025-05-30',
+      status: 'approved',
+      confidential: false,
+      summary: 'Approved three-year digital transformation strategy focusing on cloud-first architecture, API standardization, and customer experience modernization.'
+    },
+    {
+      id: 9,
+      title: 'Cybersecurity Training Mandatory Program',
+      board: 'Security Governance Board',
+      date: '2025-05-25',
+      status: 'approved',
+      confidential: false,
+      summary: 'Implementation of mandatory quarterly cybersecurity training for all employees with role-based modules and phishing simulation testing.'
+    },
+    {
+      id: 10,
+      title: 'IT Budget Reallocation Q3-Q4 2025',
+      board: 'IT Investment Board',
+      date: '2025-05-20',
+      status: 'approved',
+      confidential: true,
+      summary: 'Confidential decision - access restricted.'
+    },
+    {
+      id: 11,
+      title: 'Master Data Management Strategy',
+      board: 'Data Governance Board',
+      date: '2025-05-15',
+      status: 'approved',
+      confidential: false,
+      summary: 'Approved enterprise-wide master data management strategy with data quality metrics, stewardship roles, and integration with existing ERP systems.'
+    },
+    {
+      id: 12,
+      title: 'Green IT Sustainability Initiative',
+      board: 'IT Strategy Board',
       date: '2025-05-10',
       status: 'under-review',
       confidential: false,
-      summary: 'New framework for assessing third-party vendor security and compliance risks before contract approval.'
+      summary: 'Proposal for sustainable IT practices including carbon footprint reduction targets, energy-efficient infrastructure, and green software development practices.'
     }
   ];
 
@@ -116,11 +160,12 @@ const LatestDecisions = () => {
             align: "start",
             loop: true,
           }}
-          className="w-full"
+          orientation="vertical"
+          className="w-full max-h-96"
         >
-          <CarouselContent className="-ml-2 md:-ml-4">
+          <CarouselContent className="-mt-2 h-96">
             {publicDecisions.map((decision) => (
-              <CarouselItem key={decision.id} className="pl-2 md:pl-4 basis-full md:basis-1/3">
+              <CarouselItem key={decision.id} className="pt-2 basis-1/3">
                 <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors h-full">
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">{decision.title}</h3>
