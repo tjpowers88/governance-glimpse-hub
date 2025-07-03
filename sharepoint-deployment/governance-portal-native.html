@@ -1,921 +1,248 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IT Governance Portal</title>
+    <link rel="stylesheet" href="governance-portal-styles.css">
     <style>
-        /* Modern CSS Variables for theming */
-        :root {
-            --primary: #1e293b;
-            --primary-light: #334155;
-            --secondary: #2563eb;
-            --secondary-light: #3b82f6;
-            --accent: #10b981;
-            --background: #f8fafc;
-            --surface: #ffffff;
-            --text-primary: #1f2937;
-            --text-secondary: #6b7280;
-            --border: #e5e7eb;
-            --border-light: #f3f4f6;
-            --success: #22c55e;
-            --warning: #f59e0b;
-            --error: #ef4444;
-            --radius: 8px;
-            --shadow: 0 1px 3px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+        /* Inline critical styles for SharePoint compatibility */
+        .governance-portal-container {
+            all: initial;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
+        
+        .governance-portal-container * {
             box-sizing: border-box;
         }
-
-        body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--background);
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-
-        .portal-container {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar Navigation */
-        .sidebar {
-            width: 280px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            padding: 0;
+        
+        /* Mobile menu toggle */
+        .mobile-menu-toggle {
+            display: none;
             position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow-lg);
-            z-index: 100;
-        }
-
-        .sidebar-header {
-            padding: 24px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .sidebar-header svg {
-            width: 32px;
-            height: 32px;
-            color: var(--secondary-light);
-        }
-
-        .sidebar-header h2 {
-            font-size: 20px;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .nav-menu {
-            padding: 16px 0;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 20px;
-            margin: 2px 12px;
+            top: 1rem;
+            left: 1rem;
+            z-index: 60;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 0.5rem;
             border-radius: var(--radius);
             cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 500;
-            position: relative;
         }
-
-        .nav-item:hover {
-            background: rgba(255,255,255,0.1);
-            transform: translateX(4px);
-        }
-
-        .nav-item.active {
-            background: var(--secondary);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-        }
-
-        .nav-item.active::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: var(--secondary-light);
-            border-radius: 0 4px 4px 0;
-        }
-
-        .nav-icon {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: 280px;
-            background: var(--background);
-        }
-
-        .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            padding: 32px 40px;
-            box-shadow: var(--shadow);
-        }
-
-        .header h1 {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        .content {
-            padding: 40px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* Cards */
-        .card {
-            background: var(--surface);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            margin-bottom: 24px;
-            overflow: hidden;
-            transition: all 0.2s ease;
-        }
-
-        .card:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
-        }
-
-        .card-header {
-            padding: 24px 32px;
-            border-bottom: 1px solid var(--border);
-            background: linear-gradient(135deg, var(--surface) 0%, var(--border-light) 100%);
-        }
-
-        .card-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin: 0;
-        }
-
-        .card-content {
-            padding: 32px;
-        }
-
-        /* Grid Layouts */
-        .grid {
-            display: grid;
-            gap: 24px;
-        }
-
-        .grid-cols-3 {
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        }
-
-        .grid-cols-2 {
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        }
-
-        /* Stats Cards */
-        .stat-card {
-            text-align: center;
-            padding: 32px 24px;
-            background: linear-gradient(135deg, var(--surface) 0%, var(--border-light) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--secondary) 0%, var(--accent) 100%);
-        }
-
-        .stat-number {
-            font-size: 48px;
-            font-weight: 900;
-            color: var(--secondary);
-            margin-bottom: 8px;
-            line-height: 1;
-        }
-
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* List Items */
-        .list-item {
-            border-left: 4px solid var(--secondary);
-            padding: 20px;
-            margin-bottom: 16px;
-            background: var(--border-light);
-            border-radius: 0 var(--radius) var(--radius) 0;
-            transition: all 0.2s ease;
-        }
-
-        .list-item:hover {
-            background: var(--surface);
-            box-shadow: var(--shadow);
-            transform: translateX(4px);
-        }
-
-        .list-item-title {
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
-
-        .list-item-details {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        /* Badges */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border-radius: 16px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-primary {
-            background: rgba(37, 99, 235, 0.1);
-            color: var(--secondary);
-            border: 1px solid rgba(37, 99, 235, 0.2);
-        }
-
-        .badge-success {
-            background: rgba(34, 197, 94, 0.1);
-            color: var(--success);
-            border: 1px solid rgba(34, 197, 94, 0.2);
-        }
-
-        .badge-warning {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-            border: 1px solid rgba(245, 158, 11, 0.2);
-        }
-
-        .badge-error {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--error);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text-primary);
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .btn:hover {
-            background: var(--border-light);
-            border-color: var(--text-secondary);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow);
-        }
-
-        .btn-primary {
-            background: var(--secondary);
-            color: white;
-            border-color: var(--secondary);
-        }
-
-        .btn-primary:hover {
-            background: var(--secondary-light);
-            border-color: var(--secondary-light);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-            border-color: var(--success);
-        }
-
-        .btn-success:hover {
-            background: #16a34a;
-            border-color: #16a34a;
-        }
-
-        /* Tables */
-        .table-container {
-            overflow-x: auto;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--surface);
-        }
-
-        .table th,
-        .table td {
-            padding: 16px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .table th {
-            background: var(--border-light);
-            font-weight: 700;
-            color: var(--text-primary);
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .table tr:hover {
-            background: rgba(37, 99, 235, 0.02);
-        }
-
-        /* Hidden sections */
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s ease;
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .content {
-                padding: 20px;
-            }
-
-            .header {
-                padding: 20px;
-            }
-
-            .grid-cols-3,
-            .grid-cols-2 {
-                grid-template-columns: 1fr;
-            }
-
-            .mobile-menu-btn {
+        
+        @media (max-width: 1024px) {
+            .mobile-menu-toggle {
                 display: block;
-                position: fixed;
-                top: 20px;
-                left: 20px;
-                z-index: 101;
-                background: var(--secondary);
-                color: white;
-                border: none;
-                padding: 10px;
-                border-radius: var(--radius);
-                cursor: pointer;
             }
         }
-
-        .mobile-menu-btn {
-            display: none;
-        }
-
-        /* Loading States */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Utility Classes */
-        .text-center { text-align: center; }
-        .text-right { text-align: right; }
-        .font-bold { font-weight: 700; }
-        .font-semibold { font-weight: 600; }
-        .text-sm { font-size: 14px; }
-        .text-xs { font-size: 12px; }
-        .mt-4 { margin-top: 16px; }
-        .mb-4 { margin-bottom: 16px; }
-        .p-4 { padding: 16px; }
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .gap-2 { gap: 8px; }
-        .gap-4 { gap: 16px; }
     </style>
 </head>
 <body>
-    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
-        </svg>
-    </button>
+    <div class="governance-portal-container">
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
 
-    <div class="portal-container">
-        <!-- Sidebar Navigation -->
-        <nav class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <svg fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                </svg>
-                <h2>IT Governance</h2>
+        <!-- Navigation Sidebar -->
+        <nav class="governance-nav" id="sidebar">
+            <div class="governance-nav-header">
+                <div class="governance-nav-brand">
+                    <svg class="governance-nav-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <h1 class="governance-nav-title">IT Governance</h1>
+                </div>
+                
+                <ul class="governance-nav-menu">
+                    <li class="governance-nav-item">
+                        <button class="governance-nav-link active" onclick="showSection('dashboard', this)">
+                            <svg class="governance-nav-link-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v6H8V5z"></path>
+                            </svg>
+                            <span class="governance-nav-link-text">Dashboard</span>
+                        </button>
+                    </li>
+                    <li class="governance-nav-item">
+                        <button class="governance-nav-link" onclick="showSection('calendar', this)">
+                            <svg class="governance-nav-link-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <span class="governance-nav-link-text">Meeting Calendar</span>
+                        </button>
+                    </li>
+                    <li class="governance-nav-item">
+                        <button class="governance-nav-link" onclick="showSection('boards', this)">
+                            <svg class="governance-nav-link-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                            <span class="governance-nav-link-text">Governance Boards</span>
+                        </button>
+                    </li>
+                    <li class="governance-nav-item">
+                        <button class="governance-nav-link" onclick="showSection('governance', this)">
+                            <svg class="governance-nav-link-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                            <span class="governance-nav-link-text">IT Governance</span>
+                        </button>
+                    </li>
+                    <li class="governance-nav-item">
+                        <button class="governance-nav-link" onclick="showSection('audit', this)">
+                            <svg class="governance-nav-link-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                            </svg>
+                            <span class="governance-nav-link-text">Audit Management</span>
+                        </button>
+                    </li>
+                    <li class="governance-nav-item">
+                        <button class="governance-nav-link" onclick="showSection('policy', this)">
+                            <svg class="governance-nav-link-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                            <span class="governance-nav-link-text">Policy Management</span>
+                        </button>
+                    </li>
+                </ul>
             </div>
             
-            <div class="nav-menu">
-                <div class="nav-item active" onclick="showSection('dashboard')">
-                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v6H8V5z"></path>
-                    </svg>
-                    Dashboard
-                </div>
-                
-                <div class="nav-item" onclick="showSection('meetings')">
-                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    Meetings
-                </div>
-                
-                <div class="nav-item" onclick="showSection('boards')">
-                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                    </svg>
-                    Governance Boards
-                </div>
-                
-                <div class="nav-item" onclick="showSection('decisions')">
-                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
-                    </svg>
-                    Decisions
-                </div>
-                
-                <div class="nav-item" onclick="showSection('policies')">
-                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                    </svg>
-                    Policies
-                </div>
-
-                <div class="nav-item" onclick="showSection('audit')">
-                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-                    </svg>
-                    Audit Management
+            <div class="governance-nav-footer">
+                <div class="governance-nav-admin">
+                    <div class="governance-nav-admin-header">
+                        <svg class="governance-nav-admin-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <span class="governance-nav-admin-title">Admin</span>
+                    </div>
+                    <p class="governance-nav-admin-subtitle">System Administrator</p>
                 </div>
             </div>
         </nav>
 
         <!-- Main Content -->
-        <main class="main-content">
-            <div class="header">
-                <h1>IT Governance Portal</h1>
-                <p>Centralized governance decisions, meetings, and policy management</p>
-            </div>
-
+        <main class="governance-main">
             <!-- Dashboard Section -->
-            <div id="dashboard" class="content section active">
-                <div class="grid grid-cols-3">
-                    <div class="card stat-card">
-                        <div class="stat-number">12</div>
-                        <div class="stat-label">Active Boards</div>
+            <div id="dashboard-section" class="governance-section">
+                <div class="governance-dashboard-row">
+                    <!-- Latest Decisions -->
+                    <div class="governance-card">
+                        <div class="governance-card-header">
+                            <h2 class="governance-card-title">Latest Governance Decisions</h2>
+                            <p class="governance-card-subtitle">Recent decisions from governance boards</p>
+                        </div>
+                        
+                        <div class="governance-scroll-container">
+                            <div class="governance-scroll-vertical" id="decisions-container">
+                                <!-- Decisions will be populated by JavaScript -->
+                            </div>
+                        </div>
                     </div>
-                    <div class="card stat-card">
-                        <div class="stat-number">34</div>
-                        <div class="stat-label">Pending Decisions</div>
-                    </div>
-                    <div class="card stat-card">
-                        <div class="stat-number">18</div>
-                        <div class="stat-label">Upcoming Meetings</div>
+
+                    <!-- Upcoming Meetings -->
+                    <div class="governance-card">
+                        <div class="governance-card-header">
+                            <h2 class="governance-card-title">Upcoming Meetings</h2>
+                            <p class="governance-card-subtitle">Scheduled governance meetings</p>
+                        </div>
+                        
+                        <div class="governance-scroll-container">
+                            <div class="governance-scroll-vertical" id="meetings-container">
+                                <!-- Meetings will be populated by JavaScript -->
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Recent Decisions</h3>
-                        </div>
-                        <div class="card-content">
-                            <div class="list-item">
-                                <div class="list-item-title">Cloud Migration Strategy Approved</div>
-                                <div class="list-item-details">
-                                    <span class="badge badge-success">Approved</span> • IT Strategy Board • Jan 15, 2025
-                                </div>
-                            </div>
-                            <div class="list-item">
-                                <div class="list-item-title">Security Framework Update</div>
-                                <div class="list-item-details">
-                                    <span class="badge badge-warning">Under Review</span> • Security Board • Jan 12, 2025
-                                </div>
-                            </div>
-                            <div class="list-item">
-                                <div class="list-item-title">Budget Allocation Q1 2025</div>
-                                <div class="list-item-details">
-                                    <span class="badge badge-primary">Pending</span> • Investment Board • Jan 10, 2025
-                                </div>
-                            </div>
-                        </div>
+                <!-- Governance Boards Overview -->
+                <div class="governance-card">
+                    <div class="governance-card-header">
+                        <h2 class="governance-card-title">Governance Boards Overview</h2>
+                        <p class="governance-card-subtitle">Active governance bodies and their status</p>
                     </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Upcoming Meetings</h3>
-                        </div>
-                        <div class="card-content">
-                            <div class="list-item">
-                                <div class="list-item-title">IT Strategy Board Meeting</div>
-                                <div class="list-item-details">
-                                    📅 Jan 25, 2025 • 10:00 AM - 12:00 PM<br>
-                                    📍 Conference Room A / Microsoft Teams
-                                </div>
-                                <div class="mt-4">
-                                    <button class="btn btn-primary" onclick="joinMeeting('teams-link-1')">Join Meeting</button>
-                                </div>
-                            </div>
-                            <div class="list-item">
-                                <div class="list-item-title">Security Governance Review</div>
-                                <div class="list-item-details">
-                                    📅 Jan 30, 2025 • 2:00 PM - 4:00 PM<br>
-                                    📍 Microsoft Teams
-                                </div>
-                                <div class="mt-4">
-                                    <button class="btn btn-primary" onclick="joinMeeting('teams-link-2')">Join Meeting</button>
-                                </div>
-                            </div>
-                        </div>
+                    
+                    <div class="governance-dashboard-grid" id="boards-overview">
+                        <!-- Boards will be populated by JavaScript -->
                     </div>
                 </div>
             </div>
 
-            <!-- Meetings Section -->
-            <div id="meetings" class="content section">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="flex items-center justify-between">
-                            <h3 class="card-title">Meeting Calendar</h3>
-                            <button class="btn btn-primary" onclick="addMeeting()">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                </svg>
-                                Add Meeting
-                            </button>
-                        </div>
+            <!-- Calendar Section -->
+            <div id="calendar-section" class="governance-section" style="display: none;">
+                <div class="governance-card">
+                    <div class="governance-card-header">
+                        <h2 class="governance-card-title">Meeting Calendar</h2>
+                        <p class="governance-card-subtitle">View and manage governance meetings</p>
                     </div>
-                    <div class="card-content">
-                        <div class="table-container">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Meeting</th>
-                                        <th>Board</th>
-                                        <th>Date & Time</th>
-                                        <th>Location</th>
-                                        <th>Attendees</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Quarterly Strategy Review</strong></td>
-                                        <td><span class="badge badge-primary">IT Strategy</span></td>
-                                        <td>Jan 25, 2025<br><small>10:00 AM - 12:00 PM</small></td>
-                                        <td>Conference Room A</td>
-                                        <td>8 members</td>
-                                        <td>
-                                            <button class="btn" onclick="viewAgenda('meeting-1')">View Agenda</button>
-                                            <button class="btn btn-primary" onclick="joinMeeting('teams-1')">Join</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Security Assessment</strong></td>
-                                        <td><span class="badge badge-success">Security</span></td>
-                                        <td>Jan 30, 2025<br><small>2:00 PM - 4:00 PM</small></td>
-                                        <td>Microsoft Teams</td>
-                                        <td>12 members</td>
-                                        <td>
-                                            <button class="btn" onclick="viewAgenda('meeting-2')">View Agenda</button>
-                                            <button class="btn btn-primary" onclick="joinMeeting('teams-2')">Join</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div style="padding: 2rem; text-align: center; color: var(--color-muted-foreground);">
+                        <p>Integration with SharePoint Calendar would be implemented here.</p>
+                        <button class="governance-button governance-button-primary" onclick="integrateWithSharePoint('calendar')">
+                            Connect to SharePoint Calendar
+                        </button>
                     </div>
                 </div>
             </div>
 
             <!-- Boards Section -->
-            <div id="boards" class="content section">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="flex items-center justify-between">
-                            <h3 class="card-title">Governance Boards</h3>
-                            <button class="btn btn-primary" onclick="addBoard()">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                </svg>
-                                Add Board
-                            </button>
-                        </div>
+            <div id="boards-section" class="governance-section" style="display: none;">
+                <div class="governance-card">
+                    <div class="governance-card-header">
+                        <h2 class="governance-card-title">Governance Boards</h2>
+                        <p class="governance-card-subtitle">Manage governance board membership and activities</p>
                     </div>
-                    <div class="card-content">
-                        <div class="table-container">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Board Name</th>
-                                        <th>Type</th>
-                                        <th>Chair</th>
-                                        <th>Members</th>
-                                        <th>Next Meeting</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>IT Strategy Board</strong></td>
-                                        <td><span class="badge badge-primary">Strategic</span></td>
-                                        <td>Sarah Johnson</td>
-                                        <td>8 members</td>
-                                        <td>Jan 25, 2025</td>
-                                        <td><span class="badge badge-success">Active</span></td>
-                                        <td>
-                                            <button class="btn" onclick="viewBoard('board-1')">View</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Security Board</strong></td>
-                                        <td><span class="badge badge-warning">Tactical</span></td>
-                                        <td>Michael Chen</td>
-                                        <td>12 members</td>
-                                        <td>Jan 30, 2025</td>
-                                        <td><span class="badge badge-success">Active</span></td>
-                                        <td>
-                                            <button class="btn" onclick="viewBoard('board-2')">View</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Investment Board</strong></td>
-                                        <td><span class="badge badge-error">Financial</span></td>
-                                        <td>Lisa Rodriguez</td>
-                                        <td>6 members</td>
-                                        <td>Feb 5, 2025</td>
-                                        <td><span class="badge badge-success">Active</span></td>
-                                        <td>
-                                            <button class="btn" onclick="viewBoard('board-3')">View</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div id="boards-detailed-view">
+                        <!-- Detailed boards view will be populated by JavaScript -->
                     </div>
                 </div>
             </div>
 
-            <!-- Decisions Section -->
-            <div id="decisions" class="content section">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="flex items-center justify-between">
-                            <h3 class="card-title">Decision Tracking</h3>
-                            <button class="btn btn-primary" onclick="addDecision()">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                </svg>
-                                Add Decision
-                            </button>
-                        </div>
+            <!-- Other sections -->
+            <div id="governance-section" class="governance-section" style="display: none;">
+                <div class="governance-card">
+                    <div class="governance-card-header">
+                        <h2 class="governance-card-title">IT Governance Performance</h2>
+                        <p class="governance-card-subtitle">Key performance indicators and metrics</p>
                     </div>
-                    <div class="card-content">
-                        <div class="table-container">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Decision</th>
-                                        <th>Board</th>
-                                        <th>Status</th>
-                                        <th>Priority</th>
-                                        <th>Decision Date</th>
-                                        <th>Owner</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Cloud Migration Strategy</strong></td>
-                                        <td>IT Strategy Board</td>
-                                        <td><span class="badge badge-success">Approved</span></td>
-                                        <td><span class="badge badge-error">High</span></td>
-                                        <td>Jan 15, 2025</td>
-                                        <td>Sarah Johnson</td>
-                                        <td>
-                                            <button class="btn" onclick="viewDecision('decision-1')">View</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Security Framework Update</strong></td>
-                                        <td>Security Board</td>
-                                        <td><span class="badge badge-warning">Under Review</span></td>
-                                        <td><span class="badge badge-warning">Medium</span></td>
-                                        <td>Jan 12, 2025</td>
-                                        <td>Michael Chen</td>
-                                        <td>
-                                            <button class="btn" onclick="viewDecision('decision-2')">View</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Budget Allocation Q1</strong></td>
-                                        <td>Investment Board</td>
-                                        <td><span class="badge badge-primary">Pending</span></td>
-                                        <td><span class="badge badge-error">High</span></td>
-                                        <td>Jan 10, 2025</td>
-                                        <td>Lisa Rodriguez</td>
-                                        <td>
-                                            <button class="btn" onclick="viewDecision('decision-3')">View</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div style="padding: 2rem; text-align: center; color: var(--color-muted-foreground);">
+                        <p>Performance metrics would be displayed here using SharePoint lists and Power BI integration.</p>
+                        <button class="governance-button governance-button-primary" onclick="integrateWithSharePoint('governance')">
+                            Connect to Performance Data
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Policies Section -->
-            <div id="policies" class="content section">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="flex items-center justify-between">
-                            <h3 class="card-title">Policy Management</h3>
-                            <button class="btn btn-primary" onclick="addPolicy()">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                </svg>
-                                Add Policy
-                            </button>
-                        </div>
+            <div id="audit-section" class="governance-section" style="display: none;">
+                <div class="governance-card">
+                    <div class="governance-card-header">
+                        <h2 class="governance-card-title">Audit Management</h2>
+                        <p class="governance-card-subtitle">Track audits and compliance activities</p>
                     </div>
-                    <div class="card-content">
-                        <div class="table-container">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Policy Name</th>
-                                        <th>Category</th>
-                                        <th>Version</th>
-                                        <th>Status</th>
-                                        <th>Owner</th>
-                                        <th>Review Date</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>IT Security Policy</strong></td>
-                                        <td><span class="badge badge-error">Security</span></td>
-                                        <td>v2.1</td>
-                                        <td><span class="badge badge-success">Active</span></td>
-                                        <td>Michael Chen</td>
-                                        <td>Mar 15, 2025</td>
-                                        <td>
-                                            <button class="btn" onclick="viewPolicy('policy-1')">View</button>
-                                            <button class="btn" onclick="downloadPolicy('policy-1')">Download</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Data Governance Framework</strong></td>
-                                        <td><span class="badge badge-primary">Governance</span></td>
-                                        <td>v1.3</td>
-                                        <td><span class="badge badge-warning">Under Review</span></td>
-                                        <td>Sarah Johnson</td>
-                                        <td>Feb 20, 2025</td>
-                                        <td>
-                                            <button class="btn" onclick="viewPolicy('policy-2')">View</button>
-                                            <button class="btn" onclick="downloadPolicy('policy-2')">Download</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Cloud Usage Guidelines</strong></td>
-                                        <td><span class="badge badge-success">Operations</span></td>
-                                        <td>v1.0</td>
-                                        <td><span class="badge badge-success">Active</span></td>
-                                        <td>Lisa Rodriguez</td>
-                                        <td>Apr 10, 2025</td>
-                                        <td>
-                                            <button class="btn" onclick="viewPolicy('policy-3')">View</button>
-                                            <button class="btn" onclick="downloadPolicy('policy-3')">Download</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div style="padding: 2rem; text-align: center; color: var(--color-muted-foreground);">
+                        <p>Audit tracking would integrate with SharePoint document libraries and task lists.</p>
+                        <button class="governance-button governance-button-primary" onclick="integrateWithSharePoint('audit')">
+                            Connect to Audit System
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Audit Section -->
-            <div id="audit" class="content section">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Audit Management</h3>
+            <div id="policy-section" class="governance-section" style="display: none;">
+                <div class="governance-card">
+                    <div class="governance-card-header">
+                        <h2 class="governance-card-title">Policy Management</h2>
+                        <p class="governance-card-subtitle">Manage governance policies and procedures</p>
                     </div>
-                    <div class="card-content">
-                        <div class="grid grid-cols-2">
-                            <div class="list-item">
-                                <div class="list-item-title">Q4 2024 IT Governance Audit</div>
-                                <div class="list-item-details">
-                                    <span class="badge badge-success">Completed</span> • Completed on Dec 15, 2024<br>
-                                    Overall Score: 87% • 12 findings addressed
-                                </div>
-                            </div>
-                            <div class="list-item">
-                                <div class="list-item-title">Security Compliance Review</div>
-                                <div class="list-item-details">
-                                    <span class="badge badge-warning">In Progress</span> • Started Jan 5, 2025<br>
-                                    Expected completion: Feb 15, 2025
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <button class="btn btn-primary" onclick="generateAuditReport()">Generate Report</button>
-                            <button class="btn" onclick="scheduleAudit()">Schedule Audit</button>
-                        </div>
+                    <div style="padding: 2rem; text-align: center; color: var(--color-muted-foreground);">
+                        <p>Policy documents would be managed through SharePoint document libraries with version control.</p>
+                        <button class="governance-button governance-button-primary" onclick="integrateWithSharePoint('policy')">
+                            Connect to Policy Library
+                        </button>
                     </div>
                 </div>
             </div>
@@ -923,171 +250,349 @@
     </div>
 
     <script>
-        // Navigation functionality
-        function showSection(sectionName) {
+        // Sample data - in production this would come from SharePoint lists
+        const sampleDecisions = [
+            {
+                id: 1,
+                title: 'AI Ethics Framework Implementation',
+                board: 'IT Strategy Board',
+                date: '2025-07-01',
+                status: 'approved',
+                summary: 'Approved comprehensive AI ethics framework for all machine learning initiatives with mandatory review process and quarterly audits.'
+            },
+            {
+                id: 2,
+                title: 'Zero Trust Security Architecture Rollout',
+                board: 'Security Governance Board',
+                date: '2025-06-28',
+                status: 'approved',
+                summary: 'Approved phased implementation of zero trust security model across all enterprise systems, starting with critical infrastructure by Q4 2025.'
+            },
+            {
+                id: 3,
+                title: 'Enterprise Data Governance Policy 2025',
+                board: 'Data Governance Board',
+                date: '2025-06-20',
+                status: 'approved',
+                summary: 'Updated comprehensive data governance policies including new AI/ML data handling procedures, GDPR compliance updates, and cross-border data transfer protocols.'
+            },
+            {
+                id: 4,
+                title: 'Remote Work Security Standards v2.0',
+                board: 'IT Strategy Board',
+                date: '2025-06-15',
+                status: 'approved',
+                summary: 'Enhanced remote work technology standards including mandatory VPN usage, endpoint detection requirements, and updated BYOD policies for hybrid workforce.'
+            },
+            {
+                id: 5,
+                title: 'Digital Transformation Roadmap 2025-2027',
+                board: 'IT Strategy Board',
+                date: '2025-05-30',
+                status: 'approved',
+                summary: 'Approved three-year digital transformation strategy focusing on cloud-first architecture, API standardization, and customer experience modernization.'
+            }
+        ];
+
+        const sampleMeetings = [
+            {
+                id: 1,
+                title: 'IT Strategy Board - Q3 Planning',
+                board: 'IT Strategy Board',
+                date: '2025-07-15',
+                time: '10:00 AM - 12:00 PM',
+                location: 'Executive Conference Room / Microsoft Teams',
+                type: 'quarterly',
+                attendees: 8
+            },
+            {
+                id: 2,
+                title: 'Security Governance Board - Monthly Review',
+                board: 'Security Governance Board',
+                date: '2025-07-25',
+                time: '2:00 PM - 4:00 PM',
+                location: 'Security Operations Center / Microsoft Teams',
+                type: 'monthly',
+                attendees: 12
+            },
+            {
+                id: 3,
+                title: 'Data Governance Board - AI Ethics Review',
+                board: 'Data Governance Board',
+                date: '2025-08-05',
+                time: '9:00 AM - 11:00 AM',
+                location: 'Data Center Conference Room / Microsoft Teams Hybrid',
+                type: 'monthly',
+                attendees: 8
+            },
+            {
+                id: 4,
+                title: 'IT Investment Board - Budget Review Q3',
+                board: 'IT Investment Board',
+                date: '2025-08-20',
+                time: '11:00 AM - 1:00 PM',
+                location: 'Executive Boardroom / Microsoft Teams',
+                type: 'quarterly',
+                attendees: 10
+            }
+        ];
+
+        const sampleBoards = [
+            {
+                id: 1,
+                name: 'IT Strategy Board',
+                type: 'strategic',
+                chair: 'Sarah Johnson',
+                members: 8,
+                nextMeeting: '2025-07-15',
+                decisionsCount: 12
+            },
+            {
+                id: 2,
+                name: 'Security Governance Board',
+                type: 'tactical',
+                chair: 'Catherine Miller',
+                members: 12,
+                nextMeeting: '2025-07-25',
+                decisionsCount: 8
+            },
+            {
+                id: 3,
+                name: 'Data Governance Board',
+                type: 'tactical',
+                chair: 'Chief Data Officer',
+                members: 8,
+                nextMeeting: '2025-08-05',
+                decisionsCount: 6
+            },
+            {
+                id: 4,
+                name: 'IT Investment Board',
+                type: 'strategic',
+                chair: 'CFO',
+                members: 10,
+                nextMeeting: '2025-08-20',
+                decisionsCount: 4
+            }
+        ];
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            populateDecisions();
+            populateMeetings();
+            populateBoards();
+            populateBoardsOverview();
+        });
+
+        function showSection(sectionName, buttonElement) {
             // Hide all sections
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => {
-                section.classList.remove('active');
-            });
+            const sections = document.querySelectorAll('.governance-section');
+            sections.forEach(section => section.style.display = 'none');
             
-            // Remove active class from all nav items
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => {
-                item.classList.remove('active');
-            });
+            // Remove active class from all nav links
+            const navLinks = document.querySelectorAll('.governance-nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
             
             // Show selected section
-            const targetSection = document.getElementById(sectionName);
-            if (targetSection) {
-                targetSection.classList.add('active');
-            }
+            document.getElementById(sectionName + '-section').style.display = 'block';
             
-            // Add active class to clicked nav item
-            event.target.closest('.nav-item').classList.add('active');
-            
-            // Close mobile menu if open
-            if (window.innerWidth <= 768) {
+            // Add active class to clicked nav link
+            buttonElement.classList.add('active');
+
+            // Close mobile menu on selection
+            if (window.innerWidth <= 1024) {
                 document.getElementById('sidebar').classList.remove('open');
             }
         }
 
-        // Mobile menu functionality
         function toggleMobileMenu() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');
         }
 
-        // SharePoint integration functions
-        function joinMeeting(meetingId) {
-            // In production, this would open Outlook or Teams
-            showNotification('Opening Microsoft Teams meeting...', 'info');
-            // Example: window.open('https://teams.microsoft.com/l/meetup-join/' + meetingId);
-        }
-
-        function addMeeting() {
-            // In production, this would open SharePoint calendar or Outlook
-            showNotification('Opening meeting creation form...', 'info');
-            // Example: window.open('/_layouts/15/calendar.aspx?cmd=new');
-        }
-
-        function viewAgenda(meetingId) {
-            showNotification('Opening meeting agenda...', 'info');
-            // In production, this would open the SharePoint list item or document
-        }
-
-        function addBoard() {
-            showNotification('Opening board creation form...', 'info');
-            // In production, this would open a SharePoint form or Power Apps form
-        }
-
-        function viewBoard(boardId) {
-            showNotification('Opening board details...', 'info');
-            // In production, this would navigate to board details page
-        }
-
-        function addDecision() {
-            showNotification('Opening decision tracking form...', 'info');
-            // In production, this would open SharePoint form or Power Apps
-        }
-
-        function viewDecision(decisionId) {
-            showNotification('Opening decision details...', 'info');
-            // In production, this would show decision details modal or page
-        }
-
-        function addPolicy() {
-            showNotification('Opening policy creation form...', 'info');
-            // In production, this would open document library upload or form
-        }
-
-        function viewPolicy(policyId) {
-            showNotification('Opening policy document...', 'info');
-            // In production, this would open the policy document from SharePoint
-        }
-
-        function downloadPolicy(policyId) {
-            showNotification('Downloading policy document...', 'success');
-            // In production, this would download from SharePoint document library
-        }
-
-        function generateAuditReport() {
-            showNotification('Generating audit report...', 'info');
-            // In production, this would trigger Power Automate flow or SharePoint workflow
-        }
-
-        function scheduleAudit() {
-            showNotification('Opening audit scheduling form...', 'info');
-            // In production, this would open SharePoint calendar or form
-        }
-
-        // Notification system
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `notification notification-${type}`;
-            notification.innerHTML = `
-                <div style="
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    background: ${type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--error)' : 'var(--secondary)'};
-                    color: white;
-                    padding: 16px 24px;
-                    border-radius: var(--radius);
-                    box-shadow: var(--shadow-lg);
-                    z-index: 1000;
-                    max-width: 400px;
-                    animation: slideIn 0.3s ease;
-                ">
-                    ${message}
-                </div>
-            `;
+        function populateDecisions() {
+            const container = document.getElementById('decisions-container');
+            container.innerHTML = '';
             
-            document.body.appendChild(notification);
-            
-            // Remove notification after 3 seconds
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
+            sampleDecisions.forEach(decision => {
+                const decisionElement = document.createElement('div');
+                decisionElement.className = 'governance-decision-item governance-animate-fade-in';
+                decisionElement.innerHTML = `
+                    <div class="governance-decision-header">
+                        <h3 class="governance-decision-title">${decision.title}</h3>
+                        <span class="governance-badge governance-badge-${decision.status}">${decision.status.replace('-', ' ')}</span>
+                    </div>
+                    <div class="governance-decision-meta">
+                        <div class="governance-decision-meta-item">
+                            <svg class="governance-decision-meta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                            ${decision.board}
+                        </div>
+                        <div class="governance-decision-meta-item">
+                            <svg class="governance-decision-meta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            ${decision.date}
+                        </div>
+                    </div>
+                    <p class="governance-decision-summary">${decision.summary}</p>
+                    <a href="#" class="governance-decision-action" onclick="viewDecisionDetails(${decision.id})">
+                        <svg class="governance-decision-action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        View full decision
+                    </a>
+                `;
+                container.appendChild(decisionElement);
+            });
         }
 
-        // Add CSS for notification animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-        `;
-        document.head.appendChild(style);
+        function populateMeetings() {
+            const container = document.getElementById('meetings-container');
+            container.innerHTML = '';
+            
+            sampleMeetings.forEach(meeting => {
+                const meetingElement = document.createElement('div');
+                meetingElement.className = 'governance-meeting-item governance-animate-fade-in';
+                meetingElement.innerHTML = `
+                    <div class="governance-meeting-header">
+                        <div class="governance-meeting-title-container">
+                            <h3 class="governance-meeting-title">${meeting.title}</h3>
+                        </div>
+                        <span class="governance-badge governance-badge-${meeting.type}">${meeting.type}</span>
+                    </div>
+                    <div class="governance-meeting-details">
+                        <div class="governance-meeting-detail">
+                            <svg class="governance-meeting-detail-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            ${meeting.date}
+                        </div>
+                        <div class="governance-meeting-detail">
+                            <svg class="governance-meeting-detail-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            ${meeting.time}
+                        </div>
+                        <div class="governance-meeting-detail">
+                            <svg class="governance-meeting-detail-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="governance-meeting-location">${meeting.location}</span>
+                        </div>
+                    </div>
+                    <div class="governance-meeting-footer">
+                        ${meeting.attendees} attendees • Click for details
+                    </div>
+                `;
+                meetingElement.onclick = () => viewMeetingDetails(meeting.id);
+                container.appendChild(meetingElement);
+            });
+        }
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('IT Governance Portal initialized');
-            showNotification('Welcome to the IT Governance Portal', 'success');
-        });
+        function populateBoards() {
+            const container = document.getElementById('boards-detailed-view');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            sampleBoards.forEach(board => {
+                const boardElement = document.createElement('div');
+                boardElement.className = 'governance-card';
+                boardElement.style.marginBottom = 'var(--spacing-4)';
+                boardElement.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--spacing-4);">
+                        <div>
+                            <h3 style="margin: 0 0 var(--spacing-2) 0; font-size: var(--font-size-lg); font-weight: 600;">${board.name}</h3>
+                            <span class="governance-badge governance-badge-${board.type === 'strategic' ? 'quarterly' : 'monthly'}">${board.type}</span>
+                        </div>
+                        <button class="governance-button governance-button-outline" onclick="manageBoardDetails(${board.id})">Manage</button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-4); margin-bottom: var(--spacing-4);">
+                        <div>
+                            <div style="font-size: var(--font-size-sm); color: var(--color-muted-foreground);">Chair</div>
+                            <div style="font-weight: 500;">${board.chair}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: var(--font-size-sm); color: var(--color-muted-foreground);">Members</div>
+                            <div style="font-weight: 500;">${board.members}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: var(--font-size-sm); color: var(--color-muted-foreground);">Next Meeting</div>
+                            <div style="font-weight: 500;">${board.nextMeeting}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: var(--font-size-sm); color: var(--color-muted-foreground);">Decisions</div>
+                            <div style="font-weight: 500;">${board.decisionsCount}</div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(boardElement);
+            });
+        }
 
-        // Handle responsive behavior
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-                document.getElementById('sidebar').classList.remove('open');
-            }
-        });
+        function populateBoardsOverview() {
+            const container = document.getElementById('boards-overview');
+            container.innerHTML = '';
+            
+            sampleBoards.forEach(board => {
+                const boardElement = document.createElement('div');
+                boardElement.className = 'governance-card';
+                boardElement.style.textAlign = 'center';
+                boardElement.innerHTML = `
+                    <h3 style="margin: 0 0 var(--spacing-2) 0; font-size: var(--font-size-lg); font-weight: 600;">${board.name}</h3>
+                    <span class="governance-badge governance-badge-${board.type === 'strategic' ? 'quarterly' : 'monthly'}">${board.type}</span>
+                    <div style="margin: var(--spacing-4) 0;">
+                        <div style="font-size: var(--font-size-2xl); font-weight: bold; color: var(--color-blue-600);">${board.members}</div>
+                        <div style="font-size: var(--font-size-sm); color: var(--color-muted-foreground);">Active Members</div>
+                    </div>
+                    <button class="governance-button governance-button-outline" onclick="viewBoardDetails(${board.id})">View Details</button>
+                `;
+                container.appendChild(boardElement);
+            });
+        }
+
+        // Event handlers for SharePoint integration
+        function viewDecisionDetails(decisionId) {
+            alert(`This would open decision details for ID: ${decisionId}. In production, this would redirect to a SharePoint page or open a modal with full decision details.`);
+        }
+
+        function viewMeetingDetails(meetingId) {
+            alert(`This would open meeting details for ID: ${meetingId}. In production, this would integrate with SharePoint Calendar or Teams meeting details.`);
+        }
+
+        function viewBoardDetails(boardId) {
+            alert(`This would open board management for ID: ${boardId}. In production, this would redirect to board-specific SharePoint pages.`);
+        }
+
+        function manageBoardDetails(boardId) {
+            alert(`This would open board management interface for ID: ${boardId}. In production, this would provide access to member management, meeting scheduling, etc.`);
+        }
+
+        function integrateWithSharePoint(section) {
+            alert(`This would integrate the ${section} section with SharePoint services. Implementation would involve SharePoint REST API calls and Power Automate flows.`);
+        }
 
         // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
             const sidebar = document.getElementById('sidebar');
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
             
-            if (window.innerWidth <= 768 && 
+            if (window.innerWidth <= 1024 && 
                 !sidebar.contains(event.target) && 
-                !mobileMenuBtn.contains(event.target)) {
+                !menuToggle.contains(event.target) && 
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth > 1024) {
                 sidebar.classList.remove('open');
             }
         });
